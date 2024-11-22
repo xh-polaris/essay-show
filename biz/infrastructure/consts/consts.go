@@ -15,6 +15,7 @@ const (
 	ID           = "_id"
 	UserID       = "user_id"
 	Status       = "status"
+	CreateTime   = "create_time"
 	DeleteStatus = 3
 	EffectStatus = 0
 )

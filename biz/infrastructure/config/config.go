@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/zeromicro/go-zero/core/stores/cache"
 	"os"
 
 	"github.com/zeromicro/go-zero/core/service"
@@ -22,6 +23,11 @@ type Config struct {
 	TimeThreshold int64
 	Auth          Auth
 	Action        map[string]string
+	Mongo         struct {
+		URL string
+		DB  string
+	}
+	Cache cache.CacheConf
 }
 
 func NewConfig() (*Config, error) {

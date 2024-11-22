@@ -7,10 +7,10 @@ import (
 	"github.com/google/wire"
 )
 
-func NewProvider() (*adaptor.UserServer, error) {
+func NewProvider() (*Provider, error) {
 	wire.Build(
-		wire.Struct(new(adaptor.UserServer), "*"),
 		AllProvider,
+		wire.Struct(new(Provider), "*"),
 	)
 	return nil, nil
 }
