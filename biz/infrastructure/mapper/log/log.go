@@ -6,12 +6,10 @@ import (
 )
 
 type Log struct {
-	ID    primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Title string             `bson:"title" json:"title"`
-	Text  [][]string         `bson:"content" json:"content"`
-	// TODO 完善log定义
-	Status     int       `bson:"status" json:"status"`
-	CreateTime time.Time `bson:"create_time,omitempty" json:"createTime"`
-	UpdateTime time.Time `bson:"update_time,omitempty" json:"updateTime"`
-	DeleteTime time.Time `bson:"delete_time,omitempty" json:"deleteTime"`
+	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Grade      int64              `bson:"grade" json:"grade"`
+	Ocr        string             `bson:"ocr" json:"ocr"`
+	Response   string             `bson:"response" json:"response"`
+	Status     int                `bson:"status" json:"status"`
+	CreateTime time.Time          `bson:"create_time,omitempty" json:"createTime"`
 }

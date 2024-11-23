@@ -2,10 +2,10 @@ package log
 
 import (
 	"context"
+	"github.com/xh-polaris/essay-show/biz/application/dto/basic"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
 	util "github.com/xh-polaris/essay-show/biz/infrastructure/util/page"
-	"github.com/xh-polaris/service-idl-gen-go/kitex_gen/basic"
 	"github.com/zeromicro/go-zero/core/stores/monc"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

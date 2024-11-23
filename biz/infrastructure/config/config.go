@@ -19,15 +19,15 @@ type Auth struct {
 
 type Config struct {
 	service.ServiceConf
-	ListenOn      string
-	TimeThreshold int64
-	Auth          Auth
-	Action        map[string]string
-	Mongo         struct {
+	ListenOn string
+	State    string
+	Auth     Auth
+	Mongo    struct {
 		URL string
 		DB  string
 	}
-	Cache cache.CacheConf
+	Cache   cache.CacheConf
+	CallKey string
 }
 
 func NewConfig() (*Config, error) {

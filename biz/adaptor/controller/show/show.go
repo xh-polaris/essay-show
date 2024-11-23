@@ -28,6 +28,38 @@ func SignUp(ctx context.Context, c *app.RequestContext) {
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
+// SignIn .
+// @router /user/sign_in [POST]
+func SignIn(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.SignInReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.SignIn(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// GetUserInfo .
+// @router /user/info [GET]
+func GetUserInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.GetUserInfoReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.GetUserInfo(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
 // EssayEvaluate .
 // @router /essay/evaluate [POST]
 func EssayEvaluate(ctx context.Context, c *app.RequestContext) {

@@ -34,8 +34,6 @@ var ApplicationSet = wire.NewSet(
 	service.EssayServiceSet,
 )
 
-var DomainSet = wire.NewSet()
-
 var InfrastructureSet = wire.NewSet(
 	config.NewConfig,
 	user.NewMongoMapper,
@@ -44,6 +42,5 @@ var InfrastructureSet = wire.NewSet(
 
 var AllProvider = wire.NewSet(
 	ApplicationSet,
-	DomainSet,
 	InfrastructureSet,
 )

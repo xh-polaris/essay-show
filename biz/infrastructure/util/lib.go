@@ -1,7 +1,10 @@
 package util
 
 import (
+	"errors"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
+	"google.golang.org/grpc/codes"
 	"strconv"
 	"sync"
 
@@ -36,4 +39,11 @@ func ParallelRun(fns ...func()) {
 		})
 	}
 	wg.Wait()
+}
+
+func NonNullString(s *string, obj string) error {
+	if s == nil || *s == "" {
+		return consts.NewErrno(codes.Code(9001), errors.New(obj+"不能为空"))
+	}
+	return nil
 }

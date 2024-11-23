@@ -26,7 +26,8 @@ func NewProvider() (*Provider, error) {
 	}
 	logMongoMapper := log.NewMongoMapper(configConfig)
 	essayService := service.EssayService{
-		LogMapper: logMongoMapper,
+		LogMapper:  logMongoMapper,
+		UserMapper: mongoMapper,
 	}
 	providerProvider := &Provider{
 		Config:       configConfig,
