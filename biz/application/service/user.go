@@ -65,7 +65,7 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	return &show.SignUpResp{
 		Id:           userId,
 		AccessToken:  authorization,
-		AccessExpire: signUpResponse["accessExpire"].(int64),
+		AccessExpire: int64(signUpResponse["accessExpire"].(float64)),
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	return &show.SignInResp{
 		Id:           signInResponse["userId"].(string),
 		AccessToken:  signInResponse["accessToken"].(string),
-		AccessExpire: signInResponse["accessExpire"].(int64),
+		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
 	}, nil
 }
 

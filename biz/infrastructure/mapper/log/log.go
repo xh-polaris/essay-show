@@ -7,6 +7,7 @@ import (
 
 type Log struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserId     string             `bson:"user_id" json:"user_id"`
 	Grade      int64              `bson:"grade" json:"grade"`
 	Ocr        string             `bson:"ocr" json:"ocr"`
 	Response   string             `bson:"response" json:"response"`

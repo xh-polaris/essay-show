@@ -2,6 +2,8 @@ package util
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
@@ -9,6 +11,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 // HttpClient 是一个简单的 HTTP 客户端
@@ -24,13 +27,21 @@ func NewHttpClient() *HttpClient {
 	}
 }
 
+type requestBody struct {
+	Key       string `json:"key"`
+	Method    string `json:"method"`
+	Action    string `json:"action"`
+	Params    string `json:"params"` // string 类型
+	Timestamp int64  `json:"timestamp"`
+}
+
 type params struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
 }
 
 // SendRequest 发送 HTTP 请求
-func (c *HttpClient) SendRequest(method, url string, headers map[string]string, body map[string]interface{}) (map[string]interface{}, error) {
+func (c *HttpClient) SendRequest(method, url string, headers map[string]string, body interface{}) (map[string]interface{}, error) {
 	// 将 body 序列化为 JSON
 	bodyBytes, err := json.Marshal(body)
 	if err != nil {
@@ -162,7 +173,7 @@ func (c *HttpClient) SetPassword(authorization string, password string) (map[str
 // BetaEvaluate 用Beta接口进行批改
 func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interface{}, error) {
 
-	body := make(map[string]interface{})
+	//body := make(map[string]interface{})
 	jsonParams, err := json.Marshal(params{
 		Title:   title,
 		Content: text,
@@ -171,14 +182,25 @@ func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interfa
 		return nil, consts.ErrInvalidParams
 	}
 
-	body["params"] = string(jsonParams)
-	body["key"] = config.GetConfig().CallKey
-	body["method"] = consts.Post
-	body["action"] = consts.Beta
+	body := requestBody{
+		Key:       config.GetConfig().CallKey,
+		Method:    consts.Post,
+		Action:    consts.Beta,
+		Params:    string(jsonParams),
+		Timestamp: time.Now().Unix(),
+	}
+
+	//body["key"] = config.GetConfig().CallKey
+	//body["method"] = consts.Post
+	//body["action"] = consts.Beta
+	//body["params"] = string(jsonParams)
+	//now := time.Now().Unix()
+	//body["timestamp"] = now
 
 	header := make(map[string]string)
 	header["Content-Type"] = consts.ContentTypeJson
 	header["Charset"] = consts.CharSetUTF8
+	header["Signature"] = signature(body)
 
 	// 如果是测试环境则向测试环境发送请求
 	if config.GetConfig().State == "test" {
@@ -190,4 +212,18 @@ func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interfa
 		return nil, err
 	}
 	return resp, nil
+}
+
+func signature(b requestBody) string {
+
+	bodyBytes, err := json.Marshal(b)
+	if err != nil {
+		return ""
+	}
+
+	// 签名
+	hash := sha256.Sum256(bodyBytes)
+	hashedSign := hex.EncodeToString(hash[:])
+
+	return hashedSign
 }

@@ -53,7 +53,7 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 	}
 
 	// 获取批改的结果
-	code := callResponse["code"].(int64)
+	code := int64(callResponse["code"].(float64))
 	msg := callResponse["msg"].(string)
 	result := callResponse["result"].(string)
 
@@ -87,6 +87,7 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 
 	// 批改成功，添加记录
 	l := &log.Log{
+		UserId:     userMeta.GetUserId(),
 		Grade:      req.Grade,
 		Ocr:        req.Ocr,
 		Response:   result,
