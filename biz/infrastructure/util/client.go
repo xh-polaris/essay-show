@@ -203,9 +203,10 @@ func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interfa
 	header["Signature"] = signature(body)
 
 	// 如果是测试环境则向测试环境发送请求
-	if config.GetConfig().State == "test" {
-		header["X-Xh-Env"] = "test"
-	}
+	//if config.GetConfig().State == "test" {
+	//	header["X-Xh-Env"] = "test"
+	//}
+	header["X-Xh-Env"] = "test" // 暂时都先用测试环境批改
 
 	resp, err := c.SendRequest(consts.Post, consts.OpenApiCallUrl, header, body)
 	if err != nil {
