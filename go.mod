@@ -12,7 +12,7 @@ require (
 	github.com/hertz-contrib/monitor-prometheus v0.1.2
 	github.com/hertz-contrib/obs-opentelemetry/tracing v0.4.1
 	github.com/jinzhu/copier v0.3.5
-	github.com/xh-polaris/gopkg v0.0.0-20240424152329-9162fdb0eef9
+	github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40
 	github.com/xh-polaris/service-idl-gen-go v0.0.0-20241008065911-312508da7b2f
 	github.com/zeromicro/go-zero v1.7.3
 	go.mongodb.org/mongo-driver v1.17.1

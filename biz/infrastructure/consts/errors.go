@@ -31,10 +31,11 @@ func NewErrno(code codes.Code, err error) *Errno {
 
 // 定义常量错误
 var (
-	ErrNotAuthentication = NewErrno(codes.Unauthenticated, errors.New("not authentication"))
+	ErrNotAuthentication = NewErrno(codes.Code(1000), errors.New("not authentication"))
 	ErrForbidden         = NewErrno(codes.PermissionDenied, errors.New("forbidden"))
-	ErrSigunUp           = NewErrno(codes.Code(1001), errors.New("注册失败，请重试"))
-	ErrInSufficientCount = NewErrno(codes.Code(1002), errors.New("剩余调用次数不足，请充值或联系管理员添加"))
+	ErrSignUp            = NewErrno(codes.Code(1001), errors.New("注册失败，请重试"))
+	ErrSignIn            = NewErrno(codes.Code(1002), errors.New("登录失败，请重试"))
+	ErrInSufficientCount = NewErrno(codes.Code(1003), errors.New("剩余调用次数不足，请充值或联系管理员添加"))
 )
 
 // ErrInvalidParams 调用时错误

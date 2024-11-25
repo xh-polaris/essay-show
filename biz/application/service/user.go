@@ -29,14 +29,14 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	httpClient := util.NewHttpClient()
 	signUpResponse, err := httpClient.SignUp(req.AuthType, req.AuthId, &req.VerifyCode)
 	if err != nil {
-		return nil, consts.ErrSigunUp
+		return nil, consts.ErrSignUp
 	}
 
 	// 在中台设置密码
 	authorization := signUpResponse["accessToken"].(string)
 	_, err = httpClient.SetPassword(authorization, req.Password)
 	if err != nil {
-		return nil, consts.ErrSigunUp
+		return nil, consts.ErrSignUp
 	}
 
 	// 初始化用户
@@ -58,7 +58,7 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	// 向数据库中插入数据
 	err = u.UserMapper.Insert(ctx, &aUser)
 	if err != nil {
-		return nil, consts.ErrSigunUp
+		return nil, consts.ErrSignUp
 	}
 
 	// 返回响应
@@ -74,7 +74,7 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	httpClient := util.NewHttpClient()
 	signInResponse, err := httpClient.SignIn(req.AuthType, req.AuthId, req.VerifyCode, req.Password)
 	if err != nil {
-		return nil, consts.ErrSigunUp
+		return nil, consts.ErrSignIn
 	}
 
 	return &show.SignInResp{
