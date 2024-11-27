@@ -36,6 +36,7 @@ var (
 	ErrSignUp            = NewErrno(codes.Code(1001), errors.New("注册失败，请重试"))
 	ErrSignIn            = NewErrno(codes.Code(1002), errors.New("登录失败，请重试"))
 	ErrInSufficientCount = NewErrno(codes.Code(1003), errors.New("剩余调用次数不足，请充值或联系管理员添加"))
+	ErrRepeatedSignUp    = NewErrno(codes.Code(1004), errors.New("该手机号已注册"))
 )
 
 // ErrInvalidParams 调用时错误
@@ -48,4 +49,5 @@ var (
 var (
 	ErrNotFound        = NewErrno(codes.NotFound, errors.New("not found"))
 	ErrInvalidObjectId = NewErrno(codes.InvalidArgument, errors.New("无效的id "))
+	ErrUpdate          = NewErrno(codes.Code(2001), errors.New("更新失败"))
 )

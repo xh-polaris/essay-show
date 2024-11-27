@@ -45,3 +45,8 @@ func _getuserinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updateuserinfoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

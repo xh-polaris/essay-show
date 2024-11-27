@@ -54,7 +54,7 @@ func PostProcess(ctx context.Context, c *app.RequestContext, req, resp any, err 
 		c.JSON(hertz.StatusForbidden, err.Error())
 	default:
 		if s, ok := status.FromError(err); ok {
-			c.JSON(http.StatusBadRequest, &bizerrors.BizError{
+			c.JSON(http.StatusOK, &bizerrors.BizError{
 				Code: uint32(s.Code()),
 				Msg:  s.Message(),
 			})

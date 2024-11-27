@@ -31,6 +31,10 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	if err != nil {
 		return nil, consts.ErrSignUp
 	}
+	userId := signUpResponse["userId"].(string)
+	if userId != "" {
+		return nil, consts.ErrRepeatedSignUp
+	}
 
 	// 在中台设置密码
 	authorization := signUpResponse["accessToken"].(string)
@@ -40,7 +44,6 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	}
 
 	// 初始化用户
-	userId := signUpResponse["userId"].(string)
 	oid, err := primitive.ObjectIDFromHex(userId)
 	if err != nil {
 		return nil, err
@@ -84,7 +87,7 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	}, nil
 }
 
-func (u *UserService) GetUserInfo(ctx context.Context, s *show.GetUserInfoReq) (*show.GetUserInfoResp, error) {
+func (u *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq) (*show.GetUserInfoResp, error) {
 	userMeta := adaptor.ExtractUserMeta(ctx)
 	if userMeta.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
@@ -104,5 +107,34 @@ func (u *UserService) GetUserInfo(ctx context.Context, s *show.GetUserInfoReq) (
 			Name:  aUser.Username,
 			Count: aUser.Count,
 		},
+	}, nil
+}
+
+func (u *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserInfoReq) (*show.Response, error) {
+	// 获取用户id
+	userMeta := adaptor.ExtractUserMeta(ctx)
+	if userMeta.GetUserId() == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	// 根据用户id查询这个用户
+	aUser, err := u.UserMapper.FindOne(ctx, userMeta.GetUserId())
+	if err != nil {
+		return nil, consts.ErrNotFound
+	}
+
+	// 更新用户信息
+	aUser.Username = req.Username
+
+	// 存入新的用户信息
+	err = u.UserMapper.Update(ctx, aUser)
+	if err != nil {
+		return nil, consts.ErrUpdate
+	}
+
+	// 返回响应
+	return &show.Response{
+		Code: 0,
+		Msg:  "更新成功",
 	}, nil
 }

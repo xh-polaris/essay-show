@@ -5,11 +5,11 @@ package show
 import (
 	"context"
 	"github.com/xh-polaris/essay-show/biz/adaptor"
+	"github.com/xh-polaris/essay-show/biz/application/dto/essay/show"
 	"github.com/xh-polaris/essay-show/provider"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	show "github.com/xh-polaris/essay-show/biz/application/dto/essay/show"
 )
 
 // SignUp .
@@ -89,5 +89,21 @@ func GetEvaluateLogs(ctx context.Context, c *app.RequestContext) {
 
 	p := provider.Get()
 	resp, err := p.EssayService.GetEvaluateLogs(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// UpdateUserInfo .
+// @router /user/update [POST]
+func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.UpdateUserInfoReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.UpdateUserInfo(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
