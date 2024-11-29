@@ -23,10 +23,14 @@ func Register(r *server.Hertz) {
 		_essay.POST("/logs", append(_getevaluatelogsMw(), show.GetEvaluateLogs)...)
 	}
 	{
+		_sts := root.Group("/sts", _stsMw()...)
+		_sts.POST("/apply", append(_applysignedurlMw(), show.ApplySignedUrl)...)
+		_sts.POST("/ocr", append(_ocrMw(), show.OCR)...)
+	}
+	{
 		_user := root.Group("/user", _userMw()...)
 		_user.GET("/info", append(_getuserinfoMw(), show.GetUserInfo)...)
 		_user.POST("/sign_in", append(_signinMw(), show.SignIn)...)
 		_user.POST("/sign_up", append(_signupMw(), show.SignUp)...)
-		_user.POST("/update", append(_updateuserinfoMw(), show.UpdateUserInfo)...)
 	}
 }

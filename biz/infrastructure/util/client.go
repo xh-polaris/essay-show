@@ -27,7 +27,7 @@ func NewHttpClient() *HttpClient {
 	}
 }
 
-type requestBody struct {
+type evaluateRequestBody struct {
 	Key       string `json:"key"`
 	Method    string `json:"method"`
 	Action    string `json:"action"`
@@ -182,7 +182,7 @@ func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interfa
 		return nil, consts.ErrInvalidParams
 	}
 
-	body := requestBody{
+	body := evaluateRequestBody{
 		Key:       config.GetConfig().CallKey,
 		Method:    consts.Post,
 		Action:    consts.Beta,
@@ -215,7 +215,24 @@ func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interfa
 	return resp, nil
 }
 
-func signature(b requestBody) string {
+// BeeOCR 蜜蜂ocr
+func (c *HttpClient) BeeOCR(url string) (map[string]interface{}, error) {
+	body := make(map[string]interface{})
+	body["image_url"] = url
+
+	header := make(map[string]string)
+	header["Content-Type"] = consts.ContentTypeJson
+	header["x-app-secret"] = config.GetConfig().OCRSecret
+	header["x-app-key"] = config.GetConfig().OCRKey
+
+	resp, err := c.SendRequest(consts.Post, consts.BeeOCRUrl, header, body)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func signature(b evaluateRequestBody) string {
 
 	bodyBytes, err := json.Marshal(b)
 	if err != nil {

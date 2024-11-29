@@ -458,10 +458,10 @@ type EssayEvaluateReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Title string `protobuf:"bytes,1,opt,name=title,proto3" form:"title" json:"title" query:"title"`
-	Text  string `protobuf:"bytes,2,opt,name=text,proto3" form:"text" json:"text" query:"text"`
-	Grade int64  `protobuf:"varint,3,opt,name=grade,proto3" form:"grade" json:"grade" query:"grade"`
-	Ocr   string `protobuf:"bytes,4,opt,name=ocr,proto3" form:"ocr" json:"ocr" query:"ocr"`
+	Title string   `protobuf:"bytes,1,opt,name=title,proto3" form:"title" json:"title" query:"title"`
+	Text  string   `protobuf:"bytes,2,opt,name=text,proto3" form:"text" json:"text" query:"text"`
+	Grade int64    `protobuf:"varint,3,opt,name=grade,proto3" form:"grade" json:"grade" query:"grade"`
+	Ocr   []string `protobuf:"bytes,4,rep,name=ocr,proto3" form:"ocr" json:"ocr" query:"ocr"`
 }
 
 func (x *EssayEvaluateReq) Reset() {
@@ -517,11 +517,11 @@ func (x *EssayEvaluateReq) GetGrade() int64 {
 	return 0
 }
 
-func (x *EssayEvaluateReq) GetOcr() string {
+func (x *EssayEvaluateReq) GetOcr() []string {
 	if x != nil {
 		return x.Ocr
 	}
-	return ""
+	return nil
 }
 
 // 批改作文的响应
@@ -697,11 +697,11 @@ type Log struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id         string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
-	Grade      int64  `protobuf:"varint,2,opt,name=grade,proto3" form:"grade" json:"grade" query:"grade"`
-	Ocr        string `protobuf:"bytes,3,opt,name=ocr,proto3" form:"ocr" json:"ocr" query:"ocr"`
-	Response   string `protobuf:"bytes,4,opt,name=response,proto3" form:"response" json:"response" query:"response"`
-	CreateTime int64  `protobuf:"varint,5,opt,name=createTime,proto3" form:"createTime" json:"createTime" query:"createTime"`
+	Id         string   `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	Grade      int64    `protobuf:"varint,2,opt,name=grade,proto3" form:"grade" json:"grade" query:"grade"`
+	Ocr        []string `protobuf:"bytes,3,rep,name=ocr,proto3" form:"ocr" json:"ocr" query:"ocr"`
+	Response   string   `protobuf:"bytes,4,opt,name=response,proto3" form:"response" json:"response" query:"response"`
+	CreateTime int64    `protobuf:"varint,5,opt,name=createTime,proto3" form:"createTime" json:"createTime" query:"createTime"`
 }
 
 func (x *Log) Reset() {
@@ -750,11 +750,11 @@ func (x *Log) GetGrade() int64 {
 	return 0
 }
 
-func (x *Log) GetOcr() string {
+func (x *Log) GetOcr() []string {
 	if x != nil {
 		return x.Ocr
 	}
-	return ""
+	return nil
 }
 
 func (x *Log) GetResponse() string {
@@ -771,6 +771,221 @@ func (x *Log) GetCreateTime() int64 {
 	return 0
 }
 
+// 获取加签后url
+type ApplySignedUrlReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Prefix *string `protobuf:"bytes,1,opt,name=prefix,proto3,oneof" form:"prefix" json:"prefix" query:"prefix"`
+	Suffix *string `protobuf:"bytes,2,opt,name=suffix,proto3,oneof" form:"suffix" json:"suffix" query:"suffix"`
+}
+
+func (x *ApplySignedUrlReq) Reset() {
+	*x = ApplySignedUrlReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ApplySignedUrlReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplySignedUrlReq) ProtoMessage() {}
+
+func (x *ApplySignedUrlReq) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplySignedUrlReq.ProtoReflect.Descriptor instead.
+func (*ApplySignedUrlReq) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ApplySignedUrlReq) GetPrefix() string {
+	if x != nil && x.Prefix != nil {
+		return *x.Prefix
+	}
+	return ""
+}
+
+func (x *ApplySignedUrlReq) GetSuffix() string {
+	if x != nil && x.Suffix != nil {
+		return *x.Suffix
+	}
+	return ""
+}
+
+type ApplySignedUrlResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Url          string `protobuf:"bytes,1,opt,name=url,proto3" form:"url" json:"url" query:"url"`
+	SessionToken string `protobuf:"bytes,2,opt,name=sessionToken,proto3" form:"sessionToken" json:"sessionToken" query:"sessionToken"`
+}
+
+func (x *ApplySignedUrlResp) Reset() {
+	*x = ApplySignedUrlResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ApplySignedUrlResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplySignedUrlResp) ProtoMessage() {}
+
+func (x *ApplySignedUrlResp) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplySignedUrlResp.ProtoReflect.Descriptor instead.
+func (*ApplySignedUrlResp) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ApplySignedUrlResp) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *ApplySignedUrlResp) GetSessionToken() string {
+	if x != nil {
+		return x.SessionToken
+	}
+	return ""
+}
+
+// 调用OCR接口
+type OCRReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Ocr []string `protobuf:"bytes,1,rep,name=ocr,proto3" form:"ocr" json:"ocr" query:"ocr"`
+}
+
+func (x *OCRReq) Reset() {
+	*x = OCRReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OCRReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OCRReq) ProtoMessage() {}
+
+func (x *OCRReq) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OCRReq.ProtoReflect.Descriptor instead.
+func (*OCRReq) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *OCRReq) GetOcr() []string {
+	if x != nil {
+		return x.Ocr
+	}
+	return nil
+}
+
+type OCRResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Title string `protobuf:"bytes,1,opt,name=title,proto3" form:"title" json:"title" query:"title"`
+	Text  string `protobuf:"bytes,2,opt,name=text,proto3" form:"text" json:"text" query:"text"`
+}
+
+func (x *OCRResp) Reset() {
+	*x = OCRResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OCRResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OCRResp) ProtoMessage() {}
+
+func (x *OCRResp) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OCRResp.ProtoReflect.Descriptor instead.
+func (*OCRResp) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *OCRResp) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *OCRResp) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+// 响应
 type Response struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -783,7 +998,7 @@ type Response struct {
 func (x *Response) Reset() {
 	*x = Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_essay_show_common_proto_msgTypes[12]
+		mi := &file_essay_show_common_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -796,7 +1011,7 @@ func (x *Response) String() string {
 func (*Response) ProtoMessage() {}
 
 func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_essay_show_common_proto_msgTypes[12]
+	mi := &file_essay_show_common_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -809,7 +1024,7 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Response.ProtoReflect.Descriptor instead.
 func (*Response) Descriptor() ([]byte, []int) {
-	return file_essay_show_common_proto_rawDescGZIP(), []int{12}
+	return file_essay_show_common_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Response) GetCode() int64 {
@@ -838,7 +1053,7 @@ type GetUserInfoResp_Payload struct {
 func (x *GetUserInfoResp_Payload) Reset() {
 	*x = GetUserInfoResp_Payload{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_essay_show_common_proto_msgTypes[13]
+		mi := &file_essay_show_common_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -851,7 +1066,7 @@ func (x *GetUserInfoResp_Payload) String() string {
 func (*GetUserInfoResp_Payload) ProtoMessage() {}
 
 func (x *GetUserInfoResp_Payload) ProtoReflect() protoreflect.Message {
-	mi := &file_essay_show_common_proto_msgTypes[13]
+	mi := &file_essay_show_common_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -940,7 +1155,7 @@ var file_essay_show_common_proto_rawDesc = []byte{
 	0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0x02,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x67, 0x72,
 	0x61, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x67, 0x72, 0x61, 0x64, 0x65,
-	0x12, 0x10, 0x0a, 0x03, 0x6f, 0x63, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6f,
+	0x12, 0x10, 0x0a, 0x03, 0x6f, 0x63, 0x72, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x03, 0x6f,
 	0x63, 0x72, 0x22, 0x55, 0x0a, 0x11, 0x45, 0x73, 0x73, 0x61, 0x79, 0x45, 0x76, 0x61, 0x6c, 0x75,
 	0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d,
@@ -961,22 +1176,38 @@ var file_essay_show_common_proto_rawDesc = []byte{
 	0x6f, 0x67, 0x73, 0x22, 0x79, 0x0a, 0x03, 0x4c, 0x6f, 0x67, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x67, 0x72,
 	0x61, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x67, 0x72, 0x61, 0x64, 0x65,
-	0x12, 0x10, 0x0a, 0x03, 0x6f, 0x63, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6f,
+	0x12, 0x10, 0x0a, 0x03, 0x6f, 0x63, 0x72, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x03, 0x6f,
 	0x63, 0x72, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x04,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e,
 	0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x03, 0x52, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x30,
-	0x0a, 0x08, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f,
-	0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10,
-	0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67,
-	0x42, 0x71, 0x0a, 0x1f, 0x63, 0x6f, 0x6d, 0x2e, 0x78, 0x68, 0x70, 0x6f, 0x6c, 0x61, 0x72, 0x69,
-	0x73, 0x2e, 0x69, 0x64, 0x6c, 0x67, 0x65, 0x6e, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73,
-	0x68, 0x6f, 0x77, 0x42, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x74, 0x6f,
-	0x50, 0x01, 0x5a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x78,
-	0x68, 0x2d, 0x70, 0x6f, 0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2d,
-	0x73, 0x68, 0x6f, 0x77, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2f, 0x73,
-	0x68, 0x6f, 0x77, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x03, 0x52, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x63,
+	0x0a, 0x11, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c,
+	0x52, 0x65, 0x71, 0x12, 0x1b, 0x0a, 0x06, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x06, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x88, 0x01, 0x01,
+	0x12, 0x1b, 0x0a, 0x06, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x48, 0x01, 0x52, 0x06, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x88, 0x01, 0x01, 0x42, 0x09, 0x0a,
+	0x07, 0x5f, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x42, 0x09, 0x0a, 0x07, 0x5f, 0x73, 0x75, 0x66,
+	0x66, 0x69, 0x78, 0x22, 0x4a, 0x0a, 0x12, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69, 0x67, 0x6e,
+	0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72, 0x6c, 0x12, 0x22, 0x0a, 0x0c, 0x73,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0c, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22,
+	0x1a, 0x0a, 0x06, 0x4f, 0x43, 0x52, 0x52, 0x65, 0x71, 0x12, 0x10, 0x0a, 0x03, 0x6f, 0x63, 0x72,
+	0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x03, 0x6f, 0x63, 0x72, 0x22, 0x33, 0x0a, 0x07, 0x4f,
+	0x43, 0x52, 0x52, 0x65, 0x73, 0x70, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x12, 0x0a, 0x04,
+	0x74, 0x65, 0x78, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74,
+	0x22, 0x30, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04,
+	0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65,
+	0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d,
+	0x73, 0x67, 0x42, 0x71, 0x0a, 0x1f, 0x63, 0x6f, 0x6d, 0x2e, 0x78, 0x68, 0x70, 0x6f, 0x6c, 0x61,
+	0x72, 0x69, 0x73, 0x2e, 0x69, 0x64, 0x6c, 0x67, 0x65, 0x6e, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79,
+	0x2e, 0x73, 0x68, 0x6f, 0x77, 0x42, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x50, 0x72, 0x6f,
+	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x78, 0x68, 0x2d, 0x70, 0x6f, 0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x65, 0x73, 0x73, 0x61,
+	0x79, 0x2d, 0x73, 0x68, 0x6f, 0x77, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70, 0x70, 0x6c, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x65, 0x73, 0x73, 0x61, 0x79,
+	0x2f, 0x73, 0x68, 0x6f, 0x77, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -991,7 +1222,7 @@ func file_essay_show_common_proto_rawDescGZIP() []byte {
 	return file_essay_show_common_proto_rawDescData
 }
 
-var file_essay_show_common_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_essay_show_common_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_essay_show_common_proto_goTypes = []interface{}{
 	(*SignUpReq)(nil),                // 0: essay.show.SignUpReq
 	(*SignUpResp)(nil),               // 1: essay.show.SignUpResp
@@ -1005,13 +1236,17 @@ var file_essay_show_common_proto_goTypes = []interface{}{
 	(*GetEssayEvaluateLogsReq)(nil),  // 9: essay.show.GetEssayEvaluateLogsReq
 	(*GetEssayEvaluateLogsResp)(nil), // 10: essay.show.GetEssayEvaluateLogsResp
 	(*Log)(nil),                      // 11: essay.show.Log
-	(*Response)(nil),                 // 12: essay.show.Response
-	(*GetUserInfoResp_Payload)(nil),  // 13: essay.show.GetUserInfoResp.Payload
-	(*basic.PaginationOptions)(nil),  // 14: basic.PaginationOptions
+	(*ApplySignedUrlReq)(nil),        // 12: essay.show.ApplySignedUrlReq
+	(*ApplySignedUrlResp)(nil),       // 13: essay.show.ApplySignedUrlResp
+	(*OCRReq)(nil),                   // 14: essay.show.OCRReq
+	(*OCRResp)(nil),                  // 15: essay.show.OCRResp
+	(*Response)(nil),                 // 16: essay.show.Response
+	(*GetUserInfoResp_Payload)(nil),  // 17: essay.show.GetUserInfoResp.Payload
+	(*basic.PaginationOptions)(nil),  // 18: basic.PaginationOptions
 }
 var file_essay_show_common_proto_depIdxs = []int32{
-	13, // 0: essay.show.GetUserInfoResp.payload:type_name -> essay.show.GetUserInfoResp.Payload
-	14, // 1: essay.show.GetEssayEvaluateLogsReq.paginationOptions:type_name -> basic.PaginationOptions
+	17, // 0: essay.show.GetUserInfoResp.payload:type_name -> essay.show.GetUserInfoResp.Payload
+	18, // 1: essay.show.GetEssayEvaluateLogsReq.paginationOptions:type_name -> basic.PaginationOptions
 	11, // 2: essay.show.GetEssayEvaluateLogsResp.logs:type_name -> essay.show.Log
 	3,  // [3:3] is the sub-list for method output_type
 	3,  // [3:3] is the sub-list for method input_type
@@ -1170,7 +1405,7 @@ func file_essay_show_common_proto_init() {
 			}
 		}
 		file_essay_show_common_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Response); i {
+			switch v := v.(*ApplySignedUrlReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1182,6 +1417,54 @@ func file_essay_show_common_proto_init() {
 			}
 		}
 		file_essay_show_common_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ApplySignedUrlResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OCRReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OCRResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Response); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetUserInfoResp_Payload); i {
 			case 0:
 				return &v.state
@@ -1195,13 +1478,14 @@ func file_essay_show_common_proto_init() {
 		}
 	}
 	file_essay_show_common_proto_msgTypes[2].OneofWrappers = []interface{}{}
+	file_essay_show_common_proto_msgTypes[12].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_essay_show_common_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

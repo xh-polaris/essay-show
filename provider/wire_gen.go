@@ -11,6 +11,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/rpc/platform_sts"
 )
 
 // Injectors from wire.go:
@@ -29,10 +30,18 @@ func NewProvider() (*Provider, error) {
 		LogMapper:  logMongoMapper,
 		UserMapper: mongoMapper,
 	}
+	client := platform_sts.NewPlatformSts(configConfig)
+	platformSts := &platform_sts.PlatformSts{
+		Client: client,
+	}
+	stsService := service.StsService{
+		PlatformSts: platformSts,
+	}
 	providerProvider := &Provider{
 		Config:       configConfig,
 		UserService:  userService,
 		EssayService: essayService,
+		StsService:   stsService,
 	}
 	return providerProvider, nil
 }

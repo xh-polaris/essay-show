@@ -107,3 +107,35 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.UserService.UpdateUserInfo(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// OCR .
+// @router /sts/ocr [POST]
+func OCR(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.OCRReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.StsService.OCR(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// ApplySignedUrl .
+// @router /sts/apply [POST]
+func ApplySignedUrl(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.ApplySignedUrlReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.StsService.ApplySignedUrl(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

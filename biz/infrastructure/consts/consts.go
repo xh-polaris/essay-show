@@ -21,6 +21,7 @@ const (
 	CharSetUTF8            = "UTF-8"
 	Beta                   = "beta"
 	OpenApiCallUrl         = "https://api.xhpolaris.com/openapi/call/"
+	BeeOCRUrl              = "http://open.mifengjiaoyu.com/api/sc/image/ocr"
 )
 
 // 默认值

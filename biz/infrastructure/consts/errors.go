@@ -37,6 +37,7 @@ var (
 	ErrSignIn            = NewErrno(codes.Code(1002), errors.New("登录失败，请重试"))
 	ErrInSufficientCount = NewErrno(codes.Code(1003), errors.New("剩余调用次数不足，请充值或联系管理员添加"))
 	ErrRepeatedSignUp    = NewErrno(codes.Code(1004), errors.New("该手机号已注册"))
+	ErrOCR               = NewErrno(codes.Code(1005), errors.New("OCR识别失败，请重试"))
 )
 
 // ErrInvalidParams 调用时错误

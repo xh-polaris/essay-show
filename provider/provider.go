@@ -6,6 +6,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/rpc/platform_sts"
 )
 
 var provider *Provider
@@ -23,21 +24,28 @@ type Provider struct {
 	Config       *config.Config
 	UserService  service.UserService
 	EssayService service.EssayService
+	StsService   service.StsService
 }
 
 func Get() *Provider {
 	return provider
 }
 
+var RpcSet = wire.NewSet(
+	platform_sts.PlatformStsSet,
+)
+
 var ApplicationSet = wire.NewSet(
 	service.UserServiceSet,
 	service.EssayServiceSet,
+	service.StsServiceSet,
 )
 
 var InfrastructureSet = wire.NewSet(
 	config.NewConfig,
 	user.NewMongoMapper,
 	log.NewMongoMapper,
+	RpcSet,
 )
 
 var AllProvider = wire.NewSet(
