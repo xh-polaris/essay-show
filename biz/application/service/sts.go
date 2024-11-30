@@ -12,6 +12,7 @@ import (
 	"github.com/xh-polaris/service-idl-gen-go/kitex_gen/platform/sts"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type IStsService interface {
@@ -64,41 +65,45 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 	httpClient := util.NewHttpClient()
 	result := make([]string, 0)
 
+	start := time.Now()
 	for _, photoUrl := range req.Ocr {
+		for time.Now().Sub(start).Seconds() < 1 {
+		}
 		// 调用蜜蜂提供的OCR接口处理
 		ocrResponse, err := httpClient.BeeOCR(photoUrl)
+		start = time.Now()
 		if err != nil {
 			return nil, err
 		}
 		data := ocrResponse["data"].(map[string]interface{})
-		exclude := make([]int, 0)
+		//exclude := make([]int, 0)
 
-		// 找出所有不是手写的段落
-		lines := data["lines"].([]interface{})
-		for _, line := range lines {
-			lineMap := line.(map[string]interface{})
-			if int(lineMap["handwritten"].(float64)) == 0 {
-				exclude = append(exclude, int(lineMap["area_index"].(float64)))
-			}
-		}
+		//// 找出所有不是手写的段落
+		//lines := data["lines"].([]interface{})
+		//for _, line := range lines {
+		//	lineMap := line.(map[string]interface{})
+		//	if int(lineMap["handwritten"].(float64)) == 0 {
+		//		exclude = append(exclude, int(lineMap["area_index"].(float64)))
+		//	}
+		//}
 
 		areas := data["areas"].([]interface{})
 		for _, area := range areas {
 			areaMap := area.(map[string]interface{})
-			if !util.Contains(exclude, int(areaMap["index"].(float64))) {
-				text := areaMap["text"].(string)
-				if text != "" {
-					result = append(result, text)
-				}
+			//if !util.Contains(exclude, int(areaMap["index"].(float64))) {
+			text := areaMap["text"].(string)
+			if text != "" {
+				result = append(result, text)
 			}
 		}
-	}
-	if len(result) == 0 {
-		return nil, consts.ErrOCR
+
+		//if len(result) == 0 {
+		//return nil, consts.ErrOCR
+		//}
 	}
 	title := result[0]
 	text := strings.Builder{}
-	for _, t := range result[1:] {
+	for _, t := range result[0:] {
 		text.WriteString(t)
 		text.WriteString("\n")
 	}
