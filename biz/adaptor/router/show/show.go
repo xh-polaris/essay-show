@@ -26,6 +26,7 @@ func Register(r *server.Hertz) {
 		_sts := root.Group("/sts", _stsMw()...)
 		_sts.POST("/apply", append(_applysignedurlMw(), show.ApplySignedUrl)...)
 		_sts.POST("/ocr", append(_ocrMw(), show.OCR)...)
+		_sts.POST("/send_verify_code", append(_sendverifycodeMw(), show.SendVerifyCode)...)
 	}
 	{
 		_user := root.Group("/user", _userMw()...)

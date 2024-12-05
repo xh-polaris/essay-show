@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"github.com/google/wire"
 	"github.com/xh-polaris/essay-show/biz/adaptor"
 	"github.com/xh-polaris/essay-show/biz/application/dto/essay/show"
@@ -25,6 +26,14 @@ var UserServiceSet = wire.NewSet(
 )
 
 func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.SignUpResp, error) {
+	// 查找数据库判断手机号是否注册过
+	oldUser, err := u.UserMapper.FindOneByPhone(ctx, req.AuthId)
+	if err == nil && oldUser != nil {
+		return nil, consts.ErrRepeatedSignUp
+	} else if err != nil && !errors.Is(err, consts.ErrNotFound) {
+		return nil, consts.ErrSignUp
+	}
+
 	// 在中台注册账户
 	httpClient := util.NewHttpClient()
 	signUpResponse, err := httpClient.SignUp(req.AuthType, req.AuthId, &req.VerifyCode)
@@ -32,9 +41,6 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		return nil, consts.ErrSignUp
 	}
 	userId := signUpResponse["userId"].(string)
-	if userId != "" {
-		return nil, consts.ErrRepeatedSignUp
-	}
 
 	// 在中台设置密码
 	authorization := signUpResponse["accessToken"].(string)
@@ -52,6 +58,7 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	aUser := user.User{
 		ID:         oid,
 		Username:   req.Name,
+		Phone:      req.AuthId,
 		Count:      consts.DefaultCount,
 		Status:     0,
 		CreateTime: now,
@@ -73,15 +80,24 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 }
 
 func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.SignInResp, error) {
+	// 查找数据库判断手机号是否注册过
+	aUser, err := u.UserMapper.FindOneByPhone(ctx, req.AuthId)
+	if errors.Is(err, consts.ErrNotFound) || aUser == nil { // 未找到，说明没有注册
+		return nil, consts.ErrNotSignUp
+	} else if err != nil {
+		return nil, consts.ErrSignUp
+	}
+
 	// 通过中台登录
 	httpClient := util.NewHttpClient()
 	signInResponse, err := httpClient.SignIn(req.AuthType, req.AuthId, req.VerifyCode, req.Password)
 	if err != nil {
 		return nil, consts.ErrSignIn
 	}
+	userId := signInResponse["userId"].(string)
 
 	return &show.SignInResp{
-		Id:           signInResponse["userId"].(string),
+		Id:           userId,
 		AccessToken:  signInResponse["accessToken"].(string),
 		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
 	}, nil

@@ -170,6 +170,29 @@ func (c *HttpClient) SetPassword(authorization string, password string) (map[str
 	return resp, nil
 }
 
+// SendVerifyCode SetPassword 用于用户登录
+func (c *HttpClient) SendVerifyCode(authType string, authId string) (map[string]interface{}, error) {
+
+	body := make(map[string]interface{})
+	body["authType"] = authType
+	body["authId"] = authId
+
+	header := make(map[string]string)
+	header["Content-Type"] = consts.ContentTypeJson
+	header["Charset"] = consts.CharSetUTF8
+
+	// 如果是测试环境则向测试环境中台发送请求
+	if config.GetConfig().State == "test" {
+		header["X-Xh-Env"] = "test"
+	}
+
+	resp, err := c.SendRequest(consts.Post, consts.PlatformSendVerifyCodeUrl, header, body)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 // BetaEvaluate 用Beta接口进行批改
 func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interface{}, error) {
 

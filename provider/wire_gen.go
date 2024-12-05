@@ -36,6 +36,7 @@ func NewProvider() (*Provider, error) {
 	}
 	stsService := service.StsService{
 		PlatformSts: platformSts,
+		UserMapper:  mongoMapper,
 	}
 	providerProvider := &Provider{
 		Config:       configConfig,

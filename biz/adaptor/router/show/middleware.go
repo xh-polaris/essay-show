@@ -65,3 +65,8 @@ func _applysignedurlMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _sendverifycodeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

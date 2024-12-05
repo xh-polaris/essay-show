@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
 	"github.com/zeromicro/go-zero/core/stores/monc"
@@ -19,6 +20,7 @@ type IMongoMapper interface {
 	Insert(ctx context.Context, user *User) error
 	Update(ctx context.Context, user *User) error
 	FindOne(ctx context.Context, id string) (*User, error)
+	FindOneByPhone(ctx context.Context, id string) (*User, error)
 }
 
 type MongoMapper struct {
@@ -61,6 +63,21 @@ func (m *MongoMapper) FindOne(ctx context.Context, id string) (*User, error) {
 		return nil, consts.ErrNotFound
 	}
 	return &u, nil
+}
+
+func (m *MongoMapper) FindOneByPhone(ctx context.Context, phone string) (*User, error) {
+	var u User
+	err := m.conn.FindOneNoCache(ctx, &u, bson.M{
+		consts.Phone: phone,
+	})
+	switch {
+	case err == nil:
+		return &u, nil
+	case errors.Is(err, monc.ErrNotFound):
+		return nil, consts.ErrNotFound
+	default:
+		return nil, err
+	}
 }
 
 func (m *MongoMapper) UpdateCount(ctx context.Context, id string, increment int64) error {

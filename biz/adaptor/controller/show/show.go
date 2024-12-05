@@ -139,3 +139,18 @@ func ApplySignedUrl(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.StsService.ApplySignedUrl(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// SendVerifyCode .
+// @router /sts/send_verify_code [POST]
+func SendVerifyCode(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.SendVerifyCodeReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	p := provider.Get()
+	resp, err := p.StsService.SendVerifyCode(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
