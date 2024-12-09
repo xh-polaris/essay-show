@@ -76,6 +76,7 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		Id:           userId,
 		AccessToken:  authorization,
 		AccessExpire: int64(signUpResponse["accessExpire"].(float64)),
+		Name:         aUser.Username,
 	}, nil
 }
 
@@ -100,6 +101,7 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 		Id:           userId,
 		AccessToken:  signInResponse["accessToken"].(string),
 		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
+		Name:         aUser.Username,
 	}, nil
 }
 
@@ -122,6 +124,7 @@ func (u *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq)
 		Payload: &show.GetUserInfoResp_Payload{
 			Name:  aUser.Username,
 			Count: aUser.Count,
+			Phone: aUser.Phone,
 		},
 	}, nil
 }
