@@ -40,6 +40,7 @@ var (
 	ErrOCR               = NewErrno(codes.Code(1005), errors.New("OCR识别失败，请重试"))
 	ErrNotSignUp         = NewErrno(codes.Code(1006), errors.New("请确认手机号已注册"))
 	ErrSend              = NewErrno(codes.Code(1007), errors.New("发送验证码失败，请重试"))
+	ErrVerifyCode        = NewErrno(codes.Code(1008), errors.New("验证码错误"))
 )
 
 // ErrInvalidParams 调用时错误

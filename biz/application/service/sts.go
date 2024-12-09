@@ -52,7 +52,7 @@ func (s *StsService) ApplySignedUrl(ctx context.Context, req *show.ApplySignedUr
 		SecretId:  data.SecretId,
 		SecretKey: data.SecretKey,
 		Method:    http.MethodPut,
-		Path:      "users/" + userId + "/" + req.GetPrefix() + uuid.New().String() + req.GetSuffix(),
+		Path:      "essays/" + userId + "/" + req.GetPrefix() + uuid.New().String() + req.GetSuffix(),
 	})
 	if err != nil {
 		return nil, err
@@ -81,16 +81,16 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 			return nil, err
 		}
 		data := ocrResponse["data"].(map[string]interface{})
-		//exclude := make([]int, 0)
+		exclude := make([]int, 0)
 
-		//// 找出所有不是手写的段落
-		//lines := data["lines"].([]interface{})
-		//for _, line := range lines {
-		//	lineMap := line.(map[string]interface{})
-		//	if int(lineMap["handwritten"].(float64)) == 0 {
-		//		exclude = append(exclude, int(lineMap["area_index"].(float64)))
-		//	}
-		//}
+		// 找出所有不是手写的段落
+		lines := data["lines"].([]interface{})
+		for _, line := range lines {
+			lineMap := line.(map[string]interface{})
+			if int(lineMap["handwritten"].(float64)) == 0 {
+				exclude = append(exclude, int(lineMap["area_index"].(float64)))
+			}
+		}
 
 		areas := data["areas"].([]interface{})
 		for _, area := range areas {
@@ -102,9 +102,9 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 			}
 		}
 
-		//if len(result) == 0 {
-		//return nil, consts.ErrOCR
-		//}
+		if len(result) == 0 {
+			return nil, consts.ErrOCR
+		}
 	}
 	title := result[0]
 	text := strings.Builder{}

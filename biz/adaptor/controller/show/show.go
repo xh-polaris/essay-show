@@ -108,6 +108,22 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
+// UpdatePassword .
+// @router /user/update_password [POST]
+func UpdatePassword(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.UpdatePasswordReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.UpdatePassword(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
 // OCR .
 // @router /sts/ocr [POST]
 func OCR(ctx context.Context, c *app.RequestContext) {

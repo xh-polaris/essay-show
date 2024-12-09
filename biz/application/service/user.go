@@ -143,7 +143,7 @@ func (u *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserIn
 	}
 
 	// 更新用户信息
-	aUser.Username = req.Username
+	aUser.Username = req.Name
 
 	// 存入新的用户信息
 	err = u.UserMapper.Update(ctx, aUser)
@@ -155,5 +155,39 @@ func (u *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserIn
 	return &show.Response{
 		Code: 0,
 		Msg:  "更新成功",
+	}, nil
+}
+
+func (u *UserService) UpdatePassword(ctx context.Context, req *show.UpdatePasswordReq) (*show.UpdatePasswordResp, error) {
+	// 获取用户id
+	userMeta := adaptor.ExtractUserMeta(ctx)
+	if userMeta.GetUserId() == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	// 根据用户id查询这个用户
+	aUser, err := u.UserMapper.FindOne(ctx, userMeta.GetUserId())
+	if err != nil {
+		return nil, consts.ErrNotFound
+	}
+
+	// 在中台注册账户
+	httpClient := util.NewHttpClient()
+	signInResponse, err := httpClient.SignUp(consts.Phone, aUser.Phone, &req.VerifyCode)
+	if err != nil {
+		return nil, consts.ErrVerifyCode
+	}
+
+	// 在中台设置密码
+	authorization := signInResponse["accessToken"].(string)
+	_, err = httpClient.SetPassword(authorization, req.Password)
+	if err != nil {
+		return nil, consts.ErrSignUp
+	}
+	return &show.UpdatePasswordResp{
+		Id:           aUser.ID.Hex(),
+		AccessToken:  authorization,
+		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
+		Name:         aUser.Username,
 	}, nil
 }

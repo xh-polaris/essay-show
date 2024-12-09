@@ -70,3 +70,8 @@ func _sendverifycodeMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updatepasswordMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
