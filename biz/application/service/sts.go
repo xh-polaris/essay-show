@@ -40,7 +40,7 @@ func (s *StsService) ApplySignedUrl(ctx context.Context, req *show.ApplySignedUr
 	}
 	resp := new(show.ApplySignedUrlResp)
 	userId := aUser.GetUserId()
-	data, err := s.PlatformSts.GenCosSts(ctx, &sts.GenCosStsReq{Path: "users/" + userId + "/*"})
+	data, err := s.PlatformSts.GenCosSts(ctx, &sts.GenCosStsReq{Path: "essays/" + userId + "/*"})
 	if err != nil {
 		return nil, err
 	}
