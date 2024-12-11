@@ -95,10 +95,11 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 		areas := data["areas"].([]interface{})
 		for _, area := range areas {
 			areaMap := area.(map[string]interface{})
-			//if !util.Contains(exclude, int(areaMap["index"].(float64))) {
-			text := areaMap["text"].(string)
-			if text != "" {
-				result = append(result, text)
+			if !util.Contains(exclude, int(areaMap["index"].(float64))) {
+				text := areaMap["text"].(string)
+				if text != "" {
+					result = append(result, text)
+				}
 			}
 		}
 
@@ -108,7 +109,7 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 	}
 	title := result[0]
 	text := strings.Builder{}
-	for _, t := range result[0:] {
+	for _, t := range result[1:] {
 		text.WriteString(t)
 		text.WriteString("\n")
 	}
@@ -119,7 +120,6 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 	}
 	return resp, nil
 }
-
 func (s *StsService) SendVerifyCode(ctx context.Context, req *show.SendVerifyCodeReq) (*show.Response, error) {
 	aUser, err := s.UserMapper.FindOneByPhone(ctx, req.AuthId)
 	if req.Type == 1 { // 登录验证码
