@@ -103,9 +103,9 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 			}
 		}
 
-		if len(result) == 0 {
-			return nil, consts.ErrOCR
-		}
+	}
+	if len(result) == 0 {
+		return nil, consts.ErrOCR
 	}
 	title := result[0]
 	text := strings.Builder{}
