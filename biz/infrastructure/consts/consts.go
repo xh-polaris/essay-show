@@ -28,6 +28,6 @@ const (
 
 // 默认值
 const (
-	DefaultCount = 10
+	DefaultCount = 30
 	AppId        = 14
 )
