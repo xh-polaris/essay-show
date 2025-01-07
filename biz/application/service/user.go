@@ -26,12 +26,16 @@ var UserServiceSet = wire.NewSet(
 )
 
 func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.SignUpResp, error) {
-	// 查找数据库判断手机号是否注册过
-	oldUser, err := u.UserMapper.FindOneByPhone(ctx, req.AuthId)
-	if err == nil && oldUser != nil {
-		return nil, consts.ErrRepeatedSignUp
-	} else if err != nil && !errors.Is(err, consts.ErrNotFound) {
-		return nil, consts.ErrSignUp
+	var oldUser *user.User
+	var err error
+	if req.AuthType == "phone" {
+		// 查找数据库判断手机号是否注册过
+		oldUser, err = u.UserMapper.FindOneByPhone(ctx, req.AuthId)
+		if err == nil && oldUser != nil {
+			return nil, consts.ErrRepeatedSignUp
+		} else if err != nil && !errors.Is(err, consts.ErrNotFound) {
+			return nil, consts.ErrSignUp
+		}
 	}
 
 	// 在中台注册账户
@@ -44,9 +48,11 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 
 	// 在中台设置密码
 	authorization := signUpResponse["accessToken"].(string)
-	_, err = httpClient.SetPassword(authorization, req.Password)
-	if err != nil {
-		return nil, consts.ErrSignUp
+	if req.Password != "" {
+		_, err = httpClient.SetPassword(authorization, req.Password)
+		if err != nil {
+			return nil, consts.ErrSignUp
+		}
 	}
 
 	// 初始化用户
@@ -81,12 +87,16 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 }
 
 func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.SignInResp, error) {
-	// 查找数据库判断手机号是否注册过
-	aUser, err := u.UserMapper.FindOneByPhone(ctx, req.AuthId)
-	if errors.Is(err, consts.ErrNotFound) || aUser == nil { // 未找到，说明没有注册
-		return nil, consts.ErrNotSignUp
-	} else if err != nil {
-		return nil, consts.ErrSignUp
+	var aUser *user.User
+	var err error
+	if req.AuthType == "phone" {
+		// 查找数据库判断手机号是否注册过
+		aUser, err = u.UserMapper.FindOneByPhone(ctx, req.AuthId)
+		if errors.Is(err, consts.ErrNotFound) || aUser == nil { // 未找到，说明没有注册
+			return nil, consts.ErrNotSignUp
+		} else if err != nil {
+			return nil, consts.ErrSignUp
+		}
 	}
 
 	// 通过中台登录
