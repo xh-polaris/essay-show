@@ -107,6 +107,32 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	}
 	userId := signInResponse["userId"].(string)
 
+	// 托底逻辑，如果不注册直接登录也行
+	aUser2, err := u.UserMapper.FindOne(ctx, userId)
+	if errors.Is(err, consts.ErrNotFound) || aUser2 == nil {
+		// 初始化用户
+		oid, err2 := primitive.ObjectIDFromHex(userId)
+		if err2 != nil {
+			return nil, err2
+		}
+		now := time.Now()
+		aUser2 := user.User{
+			ID:         oid,
+			Username:   "未设置用户名",
+			Phone:      req.AuthId,
+			Count:      consts.DefaultCount,
+			Status:     0,
+			CreateTime: now,
+			UpdateTime: now,
+		}
+		err = u.UserMapper.Insert(ctx, &aUser2)
+		if err != nil {
+			return nil, consts.ErrSignUp
+		}
+	} else if err != nil {
+		return nil, consts.ErrSignIn
+	}
+
 	return &show.SignInResp{
 		Id:           userId,
 		AccessToken:  signInResponse["accessToken"].(string),
