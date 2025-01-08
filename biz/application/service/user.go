@@ -70,6 +70,9 @@ func (u *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		CreateTime: now,
 		UpdateTime: now,
 	}
+	if req.AuthType == "wechat-phone" {
+		aUser.Phone = signUpResponse["option"].(string)
+	}
 
 	// 向数据库中插入数据
 	err = u.UserMapper.Insert(ctx, &aUser)
@@ -128,6 +131,10 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 			CreateTime: now,
 			UpdateTime: now,
 		}
+		if req.AuthType == "wechat-phone" {
+			aUser.Phone = signInResponse["option"].(string)
+		}
+
 		err = u.UserMapper.Insert(ctx, aUser)
 		if err != nil {
 			return nil, consts.ErrSignUp
