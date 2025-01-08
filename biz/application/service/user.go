@@ -119,7 +119,7 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 			return nil, err2
 		}
 		now := time.Now()
-		aUser2 := user.User{
+		aUser = &user.User{
 			ID:         oid,
 			Username:   "未设置用户名",
 			Phone:      req.AuthId,
@@ -128,11 +128,10 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 			CreateTime: now,
 			UpdateTime: now,
 		}
-		err = u.UserMapper.Insert(ctx, &aUser2)
+		err = u.UserMapper.Insert(ctx, aUser)
 		if err != nil {
 			return nil, consts.ErrSignUp
 		}
-		aUser = &aUser2
 	} else if err != nil {
 		return nil, consts.ErrSignIn
 	}
