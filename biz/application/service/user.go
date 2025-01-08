@@ -105,11 +105,14 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	if err != nil {
 		return nil, consts.ErrSignIn
 	}
-	userId := signInResponse["userId"].(string)
+	userId, ok := signInResponse["userId"].(string)
+	if userId == "" || !ok {
+		return nil, consts.ErrSignIn
+	}
 
 	// 托底逻辑，如果不注册直接登录也行
-	aUser2, err := u.UserMapper.FindOne(ctx, userId)
-	if errors.Is(err, consts.ErrNotFound) || aUser2 == nil {
+	aUser, err = u.UserMapper.FindOne(ctx, userId)
+	if errors.Is(err, consts.ErrNotFound) || aUser == nil {
 		// 初始化用户
 		oid, err2 := primitive.ObjectIDFromHex(userId)
 		if err2 != nil {
@@ -129,6 +132,7 @@ func (u *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 		if err != nil {
 			return nil, consts.ErrSignUp
 		}
+		aUser = &aUser2
 	} else if err != nil {
 		return nil, consts.ErrSignIn
 	}
