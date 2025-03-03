@@ -190,6 +190,8 @@ func (u *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserIn
 
 	// 更新用户信息
 	aUser.Username = req.Name
+	aUser.School = req.School
+	aUser.Grade = req.Grade
 
 	// 存入新的用户信息
 	err = u.UserMapper.Update(ctx, aUser)
