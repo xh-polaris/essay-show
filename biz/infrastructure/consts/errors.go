@@ -55,3 +55,8 @@ var (
 	ErrInvalidObjectId = NewErrno(codes.InvalidArgument, errors.New("无效的id "))
 	ErrUpdate          = NewErrno(codes.Code(2001), errors.New("更新失败"))
 )
+
+// 练习相关错误
+var (
+	ErrJsonLog = NewErrno(codes.Code(3001), errors.New("批改结果不符合json格式，请重试批改"))
+)

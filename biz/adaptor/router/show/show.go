@@ -23,6 +23,16 @@ func Register(r *server.Hertz) {
 		_essay.POST("/logs", append(_getevaluatelogsMw(), show.GetEvaluateLogs)...)
 	}
 	{
+		_exercise := root.Group("/exercise", _exerciseMw()...)
+		_exercise.POST("/create", append(_createexerciseMw(), show.CreateExercise)...)
+		_exercise.POST("/do", append(_doexerciseMw(), show.DoExercise)...)
+		_exercise.POST("/get", append(_getexerciseMw(), show.GetExercise)...)
+		{
+			_simple := _exercise.Group("/simple", _simpleMw()...)
+			_simple.POST("/list", append(_listsimpleexercisesMw(), show.ListSimpleExercises)...)
+		}
+	}
+	{
 		_sts := root.Group("/sts", _stsMw()...)
 		_sts.POST("/apply", append(_applysignedurlMw(), show.ApplySignedUrl)...)
 		_sts.POST("/ocr", append(_ocrMw(), show.OCR)...)

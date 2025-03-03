@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
+	"encoding/json"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/json"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util"

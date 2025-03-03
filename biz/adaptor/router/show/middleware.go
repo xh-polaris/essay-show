@@ -75,3 +75,33 @@ func _updatepasswordMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _exerciseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _createexerciseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _doexerciseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getexerciseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _simpleMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listsimpleexercisesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

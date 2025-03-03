@@ -14,6 +14,8 @@ import (
 	"time"
 )
 
+var client *HttpClient
+
 // HttpClient 是一个简单的 HTTP 客户端
 type HttpClient struct {
 	Client *http.Client
@@ -25,6 +27,13 @@ func NewHttpClient() *HttpClient {
 	return &HttpClient{
 		Client: &http.Client{},
 	}
+}
+
+func GetHttpClient() *HttpClient {
+	if client == nil {
+		client = NewHttpClient()
+	}
+	return client
 }
 
 type evaluateRequestBody struct {

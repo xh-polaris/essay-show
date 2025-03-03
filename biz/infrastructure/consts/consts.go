@@ -11,6 +11,8 @@ const (
 	DeleteStatus = 3
 	EffectStatus = 0
 	Phone        = "phone"
+	LogId        = "log_id"
+	NotEqual     = "$ne"
 )
 
 // http
@@ -24,10 +26,13 @@ const (
 	Beta                      = "beta"
 	OpenApiCallUrl            = "https://api.xhpolaris.com/openapi/call/"
 	BeeOCRUrl                 = "http://open.mifengjiaoyu.com/api/sc/image/ocr"
+	ExerciseUrl               = "https://essay.cubenlp.com/api/algorithm/generate_exercises"
 )
 
 // 默认值
 const (
 	DefaultCount = 30
 	AppId        = 14
+	Like         = 1
+	DisLike      = -1
 )

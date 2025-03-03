@@ -1264,6 +1264,946 @@ func (x *SendVerifyCodeReq) GetType() int64 {
 	return 0
 }
 
+// 生成一组练习
+type CreateExerciseReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LogId string `protobuf:"bytes,1,opt,name=logId,proto3" form:"logId" json:"logId" query:"logId"`
+}
+
+func (x *CreateExerciseReq) Reset() {
+	*x = CreateExerciseReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateExerciseReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateExerciseReq) ProtoMessage() {}
+
+func (x *CreateExerciseReq) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateExerciseReq.ProtoReflect.Descriptor instead.
+func (*CreateExerciseReq) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *CreateExerciseReq) GetLogId() string {
+	if x != nil {
+		return x.LogId
+	}
+	return ""
+}
+
+type CreateExerciseResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code     int64     `protobuf:"varint,1,opt,name=code,proto3" form:"code" json:"code" query:"code"`
+	Msg      string    `protobuf:"bytes,2,opt,name=msg,proto3" form:"msg" json:"msg" query:"msg"`
+	Exercise *Exercise `protobuf:"bytes,3,opt,name=exercise,proto3" form:"exercise" json:"exercise" query:"exercise"`
+}
+
+func (x *CreateExerciseResp) Reset() {
+	*x = CreateExerciseResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateExerciseResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateExerciseResp) ProtoMessage() {}
+
+func (x *CreateExerciseResp) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateExerciseResp.ProtoReflect.Descriptor instead.
+func (*CreateExerciseResp) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *CreateExerciseResp) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *CreateExerciseResp) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *CreateExerciseResp) GetExercise() *Exercise {
+	if x != nil {
+		return x.Exercise
+	}
+	return nil
+}
+
+// 获取简要的练习记录
+type ListSimpleExercisesReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LogId             string                   `protobuf:"bytes,1,opt,name=logId,proto3" form:"logId" json:"logId" query:"logId"`
+	PaginationOptions *basic.PaginationOptions `protobuf:"bytes,2,opt,name=paginationOptions,proto3" form:"paginationOptions" json:"paginationOptions" query:"paginationOptions"`
+}
+
+func (x *ListSimpleExercisesReq) Reset() {
+	*x = ListSimpleExercisesReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[22]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSimpleExercisesReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimpleExercisesReq) ProtoMessage() {}
+
+func (x *ListSimpleExercisesReq) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[22]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimpleExercisesReq.ProtoReflect.Descriptor instead.
+func (*ListSimpleExercisesReq) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ListSimpleExercisesReq) GetLogId() string {
+	if x != nil {
+		return x.LogId
+	}
+	return ""
+}
+
+func (x *ListSimpleExercisesReq) GetPaginationOptions() *basic.PaginationOptions {
+	if x != nil {
+		return x.PaginationOptions
+	}
+	return nil
+}
+
+type ListSimpleExercisesResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code      int64                                     `protobuf:"varint,1,opt,name=code,proto3" form:"code" json:"code" query:"code"`
+	Msg       string                                    `protobuf:"bytes,2,opt,name=msg,proto3" form:"msg" json:"msg" query:"msg"`
+	Exercises []*ListSimpleExercisesResp_SimpleExercise `protobuf:"bytes,3,rep,name=exercises,proto3" form:"exercises" json:"exercises" query:"exercises"`
+	Total     int64                                     `protobuf:"varint,4,opt,name=total,proto3" form:"total" json:"total" query:"total"`
+}
+
+func (x *ListSimpleExercisesResp) Reset() {
+	*x = ListSimpleExercisesResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSimpleExercisesResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimpleExercisesResp) ProtoMessage() {}
+
+func (x *ListSimpleExercisesResp) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimpleExercisesResp.ProtoReflect.Descriptor instead.
+func (*ListSimpleExercisesResp) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ListSimpleExercisesResp) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *ListSimpleExercisesResp) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *ListSimpleExercisesResp) GetExercises() []*ListSimpleExercisesResp_SimpleExercise {
+	if x != nil {
+		return x.Exercises
+	}
+	return nil
+}
+
+func (x *ListSimpleExercisesResp) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+// 获取练习详情
+type GetExerciseReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LogId string `protobuf:"bytes,1,opt,name=logId,proto3" form:"logId" json:"logId" query:"logId"`
+}
+
+func (x *GetExerciseReq) Reset() {
+	*x = GetExerciseReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetExerciseReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetExerciseReq) ProtoMessage() {}
+
+func (x *GetExerciseReq) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetExerciseReq.ProtoReflect.Descriptor instead.
+func (*GetExerciseReq) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *GetExerciseReq) GetLogId() string {
+	if x != nil {
+		return x.LogId
+	}
+	return ""
+}
+
+type GetExerciseResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code     int64     `protobuf:"varint,1,opt,name=code,proto3" form:"code" json:"code" query:"code"`
+	Msg      string    `protobuf:"bytes,2,opt,name=msg,proto3" form:"msg" json:"msg" query:"msg"`
+	Exercise *Exercise `protobuf:"bytes,3,opt,name=exercise,proto3" form:"exercise" json:"exercise" query:"exercise"`
+}
+
+func (x *GetExerciseResp) Reset() {
+	*x = GetExerciseResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetExerciseResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetExerciseResp) ProtoMessage() {}
+
+func (x *GetExerciseResp) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetExerciseResp.ProtoReflect.Descriptor instead.
+func (*GetExerciseResp) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *GetExerciseResp) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetExerciseResp) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *GetExerciseResp) GetExercise() *Exercise {
+	if x != nil {
+		return x.Exercise
+	}
+	return nil
+}
+
+// 提交一次作答
+type DoExerciseReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id      string                  `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	Records []*DoExerciseReq_Record `protobuf:"bytes,2,rep,name=records,proto3" form:"records" json:"records" query:"records"`
+}
+
+func (x *DoExerciseReq) Reset() {
+	*x = DoExerciseReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DoExerciseReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoExerciseReq) ProtoMessage() {}
+
+func (x *DoExerciseReq) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoExerciseReq.ProtoReflect.Descriptor instead.
+func (*DoExerciseReq) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *DoExerciseReq) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DoExerciseReq) GetRecords() []*DoExerciseReq_Record {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+type DoExerciseResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code    int64    `protobuf:"varint,1,opt,name=code,proto3" form:"code" json:"code" query:"code"`
+	Msg     string   `protobuf:"bytes,2,opt,name=msg,proto3" form:"msg" json:"msg" query:"msg"`
+	Records *Records `protobuf:"bytes,3,opt,name=records,proto3" form:"records" json:"records" query:"records"`
+}
+
+func (x *DoExerciseResp) Reset() {
+	*x = DoExerciseResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DoExerciseResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoExerciseResp) ProtoMessage() {}
+
+func (x *DoExerciseResp) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoExerciseResp.ProtoReflect.Descriptor instead.
+func (*DoExerciseResp) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *DoExerciseResp) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *DoExerciseResp) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *DoExerciseResp) GetRecords() *Records {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+// Exercise 代表一次练习记录
+type Exercise struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id         string    `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`                                  // 练习 ID
+	UserId     string    `protobuf:"bytes,2,opt,name=userId,proto3" form:"userId" json:"userId" query:"userId"`                  // 归属用户 ID
+	LogId      string    `protobuf:"bytes,3,opt,name=logId,proto3" form:"logId" json:"logId" query:"logId"`                      // 批改记录 ID
+	Question   *Question `protobuf:"bytes,4,opt,name=question,proto3" form:"question" json:"question" query:"question"`          // 题目内容
+	History    *History  `protobuf:"bytes,5,opt,name=history,proto3" form:"history" json:"history" query:"history"`              // 用户做题记录
+	Like       int64     `protobuf:"varint,6,opt,name=like,proto3" form:"like" json:"like" query:"like"`                         // 点赞状态，-1: 不喜欢, 1: 喜欢
+	CreateTime int64     `protobuf:"varint,7,opt,name=createTime,proto3" form:"createTime" json:"createTime" query:"createTime"` // 创建时间
+	UpdateTime int64     `protobuf:"varint,8,opt,name=updateTime,proto3" form:"updateTime" json:"updateTime" query:"updateTime"` // 更新时间
+	Status     int64     `protobuf:"varint,10,opt,name=status,proto3" form:"status" json:"status" query:"status"`                // 练习状态
+}
+
+func (x *Exercise) Reset() {
+	*x = Exercise{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Exercise) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Exercise) ProtoMessage() {}
+
+func (x *Exercise) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Exercise.ProtoReflect.Descriptor instead.
+func (*Exercise) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *Exercise) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Exercise) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Exercise) GetLogId() string {
+	if x != nil {
+		return x.LogId
+	}
+	return ""
+}
+
+func (x *Exercise) GetQuestion() *Question {
+	if x != nil {
+		return x.Question
+	}
+	return nil
+}
+
+func (x *Exercise) GetHistory() *History {
+	if x != nil {
+		return x.History
+	}
+	return nil
+}
+
+func (x *Exercise) GetLike() int64 {
+	if x != nil {
+		return x.Like
+	}
+	return 0
+}
+
+func (x *Exercise) GetCreateTime() int64 {
+	if x != nil {
+		return x.CreateTime
+	}
+	return 0
+}
+
+func (x *Exercise) GetUpdateTime() int64 {
+	if x != nil {
+		return x.UpdateTime
+	}
+	return 0
+}
+
+func (x *Exercise) GetStatus() int64 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
+// Question 代表一组题目
+type Question struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ChoiceQuestions []*ChoiceQuestion `protobuf:"bytes,1,rep,name=choiceQuestions,proto3" form:"choiceQuestions" json:"choiceQuestions" query:"choiceQuestions"` // 选择题列表
+}
+
+func (x *Question) Reset() {
+	*x = Question{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[29]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Question) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Question) ProtoMessage() {}
+
+func (x *Question) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[29]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Question.ProtoReflect.Descriptor instead.
+func (*Question) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *Question) GetChoiceQuestions() []*ChoiceQuestion {
+	if x != nil {
+		return x.ChoiceQuestions
+	}
+	return nil
+}
+
+// ChoiceQuestion 代表一道完整的选择题
+type ChoiceQuestion struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id          string    `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`                                     // 题目 ID
+	Question    string    `protobuf:"bytes,2,opt,name=question,proto3" form:"question" json:"question" query:"question"`             // 问题描述
+	Explanation string    `protobuf:"bytes,3,opt,name=explanation,proto3" form:"explanation" json:"explanation" query:"explanation"` // 题目解答
+	Options     []*Option `protobuf:"bytes,4,rep,name=options,proto3" form:"options" json:"options" query:"options"`                 // 题目选项
+}
+
+func (x *ChoiceQuestion) Reset() {
+	*x = ChoiceQuestion{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[30]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ChoiceQuestion) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChoiceQuestion) ProtoMessage() {}
+
+func (x *ChoiceQuestion) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[30]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChoiceQuestion.ProtoReflect.Descriptor instead.
+func (*ChoiceQuestion) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *ChoiceQuestion) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ChoiceQuestion) GetQuestion() string {
+	if x != nil {
+		return x.Question
+	}
+	return ""
+}
+
+func (x *ChoiceQuestion) GetExplanation() string {
+	if x != nil {
+		return x.Explanation
+	}
+	return ""
+}
+
+func (x *ChoiceQuestion) GetOptions() []*Option {
+	if x != nil {
+		return x.Options
+	}
+	return nil
+}
+
+// Option 代表选择题中的一个选项
+type Option struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Option  string `protobuf:"bytes,1,opt,name=option,proto3" form:"option" json:"option" query:"option"`     // 选项，如 'A'
+	Content string `protobuf:"bytes,2,opt,name=content,proto3" form:"content" json:"content" query:"content"` // 选项内容
+	Score   int64  `protobuf:"varint,3,opt,name=score,proto3" form:"score" json:"score" query:"score"`        // 选项得分
+}
+
+func (x *Option) Reset() {
+	*x = Option{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[31]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Option) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Option) ProtoMessage() {}
+
+func (x *Option) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[31]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Option.ProtoReflect.Descriptor instead.
+func (*Option) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *Option) GetOption() string {
+	if x != nil {
+		return x.Option
+	}
+	return ""
+}
+
+func (x *Option) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *Option) GetScore() int64 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
+// History 代表一组题目的总记录
+type History struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Records []*Records `protobuf:"bytes,1,rep,name=records,proto3" form:"records" json:"records" query:"records"` // 记录列表
+}
+
+func (x *History) Reset() {
+	*x = History{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[32]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *History) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*History) ProtoMessage() {}
+
+func (x *History) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[32]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use History.ProtoReflect.Descriptor instead.
+func (*History) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *History) GetRecords() []*Records {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+// Records 代表用户做题的一组记录
+type Records struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Records    []*Record `protobuf:"bytes,1,rep,name=records,proto3" form:"records" json:"records" query:"records"`              // 作答记录
+	Score      int64     `protobuf:"varint,2,opt,name=score,proto3" form:"score" json:"score" query:"score"`                     // 总得分
+	CreateTime int64     `protobuf:"varint,3,opt,name=createTime,proto3" form:"createTime" json:"createTime" query:"createTime"` // 提交时间
+}
+
+func (x *Records) Reset() {
+	*x = Records{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[33]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Records) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Records) ProtoMessage() {}
+
+func (x *Records) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[33]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Records.ProtoReflect.Descriptor instead.
+func (*Records) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *Records) GetRecords() []*Record {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+func (x *Records) GetScore() int64 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
+func (x *Records) GetCreateTime() int64 {
+	if x != nil {
+		return x.CreateTime
+	}
+	return 0
+}
+
+// Record 代表用户做的一道题的记录
+type Record struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`                 // 题目 ID
+	Option string `protobuf:"bytes,2,opt,name=option,proto3" form:"option" json:"option" query:"option"` // 用户选择的选项
+	Score  int64  `protobuf:"varint,3,opt,name=score,proto3" form:"score" json:"score" query:"score"`    // 得分
+}
+
+func (x *Record) Reset() {
+	*x = Record{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[34]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Record) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Record) ProtoMessage() {}
+
+func (x *Record) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[34]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Record.ProtoReflect.Descriptor instead.
+func (*Record) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *Record) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Record) GetOption() string {
+	if x != nil {
+		return x.Option
+	}
+	return ""
+}
+
+func (x *Record) GetScore() int64 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
 type GetUserInfoResp_Payload struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1277,7 +2217,7 @@ type GetUserInfoResp_Payload struct {
 func (x *GetUserInfoResp_Payload) Reset() {
 	*x = GetUserInfoResp_Payload{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_essay_show_common_proto_msgTypes[20]
+		mi := &file_essay_show_common_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1290,7 +2230,7 @@ func (x *GetUserInfoResp_Payload) String() string {
 func (*GetUserInfoResp_Payload) ProtoMessage() {}
 
 func (x *GetUserInfoResp_Payload) ProtoReflect() protoreflect.Message {
-	mi := &file_essay_show_common_proto_msgTypes[20]
+	mi := &file_essay_show_common_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1323,6 +2263,195 @@ func (x *GetUserInfoResp_Payload) GetCount() int64 {
 func (x *GetUserInfoResp_Payload) GetPhone() string {
 	if x != nil {
 		return x.Phone
+	}
+	return ""
+}
+
+type ListSimpleExercisesResp_Record struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id    string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`              // 题目id
+	Score int64  `protobuf:"varint,2,opt,name=score,proto3" form:"score" json:"score" query:"score"` // 得分
+}
+
+func (x *ListSimpleExercisesResp_Record) Reset() {
+	*x = ListSimpleExercisesResp_Record{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[36]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSimpleExercisesResp_Record) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimpleExercisesResp_Record) ProtoMessage() {}
+
+func (x *ListSimpleExercisesResp_Record) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[36]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimpleExercisesResp_Record.ProtoReflect.Descriptor instead.
+func (*ListSimpleExercisesResp_Record) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{23, 0}
+}
+
+func (x *ListSimpleExercisesResp_Record) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ListSimpleExercisesResp_Record) GetScore() int64 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
+type ListSimpleExercisesResp_SimpleExercise struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id         string                            `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`                                  // 练习id
+	TotalScore int64                             `protobuf:"varint,2,opt,name=totalScore,proto3" form:"totalScore" json:"totalScore" query:"totalScore"` // 总得分
+	Records    []*ListSimpleExercisesResp_Record `protobuf:"bytes,3,rep,name=records,proto3" form:"records" json:"records" query:"records"`              // 题目id及其对应得分
+	FinishTime int64                             `protobuf:"varint,4,opt,name=finishTime,proto3" form:"finishTime" json:"finishTime" query:"finishTime"` // 完成时间
+	Like       int64                             `protobuf:"varint,5,opt,name=like,proto3" form:"like" json:"like" query:"like"`                         // 是否评价
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) Reset() {
+	*x = ListSimpleExercisesResp_SimpleExercise{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[37]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimpleExercisesResp_SimpleExercise) ProtoMessage() {}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[37]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimpleExercisesResp_SimpleExercise.ProtoReflect.Descriptor instead.
+func (*ListSimpleExercisesResp_SimpleExercise) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{23, 1}
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) GetTotalScore() int64 {
+	if x != nil {
+		return x.TotalScore
+	}
+	return 0
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) GetRecords() []*ListSimpleExercisesResp_Record {
+	if x != nil {
+		return x.Records
+	}
+	return nil
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) GetFinishTime() int64 {
+	if x != nil {
+		return x.FinishTime
+	}
+	return 0
+}
+
+func (x *ListSimpleExercisesResp_SimpleExercise) GetLike() int64 {
+	if x != nil {
+		return x.Like
+	}
+	return 0
+}
+
+type DoExerciseReq_Record struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	Option string `protobuf:"bytes,2,opt,name=option,proto3" form:"option" json:"option" query:"option"`
+}
+
+func (x *DoExerciseReq_Record) Reset() {
+	*x = DoExerciseReq_Record{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_essay_show_common_proto_msgTypes[38]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DoExerciseReq_Record) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoExerciseReq_Record) ProtoMessage() {}
+
+func (x *DoExerciseReq_Record) ProtoReflect() protoreflect.Message {
+	mi := &file_essay_show_common_proto_msgTypes[38]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoExerciseReq_Record.ProtoReflect.Descriptor instead.
+func (*DoExerciseReq_Record) Descriptor() ([]byte, []int) {
+	return file_essay_show_common_proto_rawDescGZIP(), []int{26, 0}
+}
+
+func (x *DoExerciseReq_Record) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DoExerciseReq_Record) GetOption() string {
+	if x != nil {
+		return x.Option
 	}
 	return ""
 }
@@ -1456,14 +2585,133 @@ var file_essay_show_common_proto_rawDesc = []byte{
 	0x61, 0x75, 0x74, 0x68, 0x54, 0x79, 0x70, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x75, 0x74, 0x68,
 	0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x61, 0x75, 0x74, 0x68, 0x49, 0x64,
 	0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04,
-	0x74, 0x79, 0x70, 0x65, 0x42, 0x71, 0x0a, 0x1f, 0x63, 0x6f, 0x6d, 0x2e, 0x78, 0x68, 0x70, 0x6f,
-	0x6c, 0x61, 0x72, 0x69, 0x73, 0x2e, 0x69, 0x64, 0x6c, 0x67, 0x65, 0x6e, 0x2e, 0x65, 0x73, 0x73,
-	0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x42, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x78, 0x68, 0x2d, 0x70, 0x6f, 0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x65, 0x73,
-	0x73, 0x61, 0x79, 0x2d, 0x73, 0x68, 0x6f, 0x77, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70, 0x70,
-	0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x65, 0x73, 0x73,
-	0x61, 0x79, 0x2f, 0x73, 0x68, 0x6f, 0x77, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x79, 0x70, 0x65, 0x22, 0x29, 0x0a, 0x11, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x45, 0x78,
+	0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x6f, 0x67,
+	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x6f, 0x67, 0x49, 0x64, 0x22,
+	0x6c, 0x0a, 0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x30, 0x0a, 0x08, 0x65,
+	0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e,
+	0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e, 0x45, 0x78, 0x65, 0x72, 0x63,
+	0x69, 0x73, 0x65, 0x52, 0x08, 0x65, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x22, 0x76, 0x0a,
+	0x16, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63,
+	0x69, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x6f, 0x67, 0x49, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x6f, 0x67, 0x49, 0x64, 0x12, 0x46, 0x0a,
+	0x11, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x62, 0x61, 0x73, 0x69, 0x63,
+	0x2e, 0x50, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x52, 0x11, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4f, 0x70,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x94, 0x03, 0x0a, 0x17, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x69,
+	0x6d, 0x70, 0x6c, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x50, 0x0a, 0x09, 0x65, 0x78, 0x65, 0x72, 0x63,
+	0x69, 0x73, 0x65, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x32, 0x2e, 0x65, 0x73, 0x73,
+	0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x69, 0x6d, 0x70,
+	0x6c, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x2e,
+	0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x09,
+	0x65, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x74,
+	0x61, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x1a,
+	0x2e, 0x0a, 0x06, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x73, 0x63, 0x6f,
+	0x72, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x1a,
+	0xba, 0x01, 0x0a, 0x0e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69,
+	0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
+	0x69, 0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x53, 0x63, 0x6f, 0x72, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x53, 0x63, 0x6f,
+	0x72, 0x65, 0x12, 0x44, 0x0a, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x18, 0x03, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77,
+	0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x45, 0x78, 0x65, 0x72, 0x63,
+	0x69, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52,
+	0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x66, 0x69, 0x6e, 0x69,
+	0x73, 0x68, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x66, 0x69,
+	0x6e, 0x69, 0x73, 0x68, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x69, 0x6b, 0x65,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x6c, 0x69, 0x6b, 0x65, 0x22, 0x26, 0x0a, 0x0e,
+	0x47, 0x65, 0x74, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x12, 0x14,
+	0x0a, 0x05, 0x6c, 0x6f, 0x67, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c,
+	0x6f, 0x67, 0x49, 0x64, 0x22, 0x69, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x45, 0x78, 0x65, 0x72, 0x63,
+	0x69, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d,
+	0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x30, 0x0a,
+	0x08, 0x65, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x14, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e, 0x45, 0x78, 0x65,
+	0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x08, 0x65, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x22,
+	0x8d, 0x01, 0x0a, 0x0d, 0x44, 0x6f, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x65,
+	0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x3a, 0x0a, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x18, 0x02, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e,
+	0x44, 0x6f, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x2e, 0x52, 0x65,
+	0x63, 0x6f, 0x72, 0x64, 0x52, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x1a, 0x30, 0x0a,
+	0x06, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x22,
+	0x65, 0x0a, 0x0e, 0x44, 0x6f, 0x45, 0x78, 0x65, 0x72, 0x63, 0x69, 0x73, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x2d, 0x0a, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79,
+	0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x52, 0x07, 0x72,
+	0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x22, 0x95, 0x02, 0x0a, 0x08, 0x45, 0x78, 0x65, 0x72, 0x63,
+	0x69, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x6c,
+	0x6f, 0x67, 0x49, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x6f, 0x67, 0x49,
+	0x64, 0x12, 0x30, 0x0a, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77,
+	0x2e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x2d, 0x0a, 0x07, 0x68, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f,
+	0x77, 0x2e, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x07, 0x68, 0x69, 0x73, 0x74, 0x6f,
+	0x72, 0x79, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x69, 0x6b, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x04, 0x6c, 0x69, 0x6b, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x54, 0x69, 0x6d, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x54, 0x69, 0x6d, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x75, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x18, 0x0a, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x50,
+	0x0a, 0x08, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x44, 0x0a, 0x0f, 0x63, 0x68,
+	0x6f, 0x69, 0x63, 0x65, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77,
+	0x2e, 0x43, 0x68, 0x6f, 0x69, 0x63, 0x65, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x52,
+	0x0f, 0x63, 0x68, 0x6f, 0x69, 0x63, 0x65, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x22, 0x8c, 0x01, 0x0a, 0x0e, 0x43, 0x68, 0x6f, 0x69, 0x63, 0x65, 0x51, 0x75, 0x65, 0x73, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x20, 0x0a, 0x0b, 0x65, 0x78, 0x70, 0x6c, 0x61, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x65, 0x78, 0x70, 0x6c, 0x61, 0x6e, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x2c, 0x0a, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x12, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e,
+	0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22,
+	0x50, 0x0a, 0x06, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x73,
+	0x63, 0x6f, 0x72, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x73, 0x63, 0x6f, 0x72,
+	0x65, 0x22, 0x38, 0x0a, 0x07, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x12, 0x2d, 0x0a, 0x07,
+	0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x13, 0x2e,
+	0x65, 0x73, 0x73, 0x61, 0x79, 0x2e, 0x73, 0x68, 0x6f, 0x77, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x73, 0x52, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x22, 0x6d, 0x0a, 0x07, 0x52,
+	0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x12, 0x2c, 0x0a, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64,
+	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79, 0x2e,
+	0x73, 0x68, 0x6f, 0x77, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x07, 0x72, 0x65, 0x63,
+	0x6f, 0x72, 0x64, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x05, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x63, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x46, 0x0a, 0x06, 0x52, 0x65,
+	0x63, 0x6f, 0x72, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x02, 0x69, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05,
+	0x73, 0x63, 0x6f, 0x72, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x73, 0x63, 0x6f,
+	0x72, 0x65, 0x42, 0x71, 0x0a, 0x1f, 0x63, 0x6f, 0x6d, 0x2e, 0x78, 0x68, 0x70, 0x6f, 0x6c, 0x61,
+	0x72, 0x69, 0x73, 0x2e, 0x69, 0x64, 0x6c, 0x67, 0x65, 0x6e, 0x2e, 0x65, 0x73, 0x73, 0x61, 0x79,
+	0x2e, 0x73, 0x68, 0x6f, 0x77, 0x42, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x50, 0x72, 0x6f,
+	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x78, 0x68, 0x2d, 0x70, 0x6f, 0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x65, 0x73, 0x73, 0x61,
+	0x79, 0x2d, 0x73, 0x68, 0x6f, 0x77, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70, 0x70, 0x6c, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x65, 0x73, 0x73, 0x61, 0x79,
+	0x2f, 0x73, 0x68, 0x6f, 0x77, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1478,40 +2726,71 @@ func file_essay_show_common_proto_rawDescGZIP() []byte {
 	return file_essay_show_common_proto_rawDescData
 }
 
-var file_essay_show_common_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_essay_show_common_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_essay_show_common_proto_goTypes = []interface{}{
-	(*SignUpReq)(nil),                // 0: essay.show.SignUpReq
-	(*SignUpResp)(nil),               // 1: essay.show.SignUpResp
-	(*SignInReq)(nil),                // 2: essay.show.SignInReq
-	(*SignInResp)(nil),               // 3: essay.show.SignInResp
-	(*GetUserInfoReq)(nil),           // 4: essay.show.GetUserInfoReq
-	(*GetUserInfoResp)(nil),          // 5: essay.show.GetUserInfoResp
-	(*UpdateUserInfoReq)(nil),        // 6: essay.show.UpdateUserInfoReq
-	(*UpdatePasswordReq)(nil),        // 7: essay.show.UpdatePasswordReq
-	(*UpdatePasswordResp)(nil),       // 8: essay.show.UpdatePasswordResp
-	(*EssayEvaluateReq)(nil),         // 9: essay.show.EssayEvaluateReq
-	(*EssayEvaluateResp)(nil),        // 10: essay.show.EssayEvaluateResp
-	(*GetEssayEvaluateLogsReq)(nil),  // 11: essay.show.GetEssayEvaluateLogsReq
-	(*GetEssayEvaluateLogsResp)(nil), // 12: essay.show.GetEssayEvaluateLogsResp
-	(*Log)(nil),                      // 13: essay.show.Log
-	(*ApplySignedUrlReq)(nil),        // 14: essay.show.ApplySignedUrlReq
-	(*ApplySignedUrlResp)(nil),       // 15: essay.show.ApplySignedUrlResp
-	(*OCRReq)(nil),                   // 16: essay.show.OCRReq
-	(*OCRResp)(nil),                  // 17: essay.show.OCRResp
-	(*Response)(nil),                 // 18: essay.show.Response
-	(*SendVerifyCodeReq)(nil),        // 19: essay.show.SendVerifyCodeReq
-	(*GetUserInfoResp_Payload)(nil),  // 20: essay.show.GetUserInfoResp.Payload
-	(*basic.PaginationOptions)(nil),  // 21: basic.PaginationOptions
+	(*SignUpReq)(nil),                              // 0: essay.show.SignUpReq
+	(*SignUpResp)(nil),                             // 1: essay.show.SignUpResp
+	(*SignInReq)(nil),                              // 2: essay.show.SignInReq
+	(*SignInResp)(nil),                             // 3: essay.show.SignInResp
+	(*GetUserInfoReq)(nil),                         // 4: essay.show.GetUserInfoReq
+	(*GetUserInfoResp)(nil),                        // 5: essay.show.GetUserInfoResp
+	(*UpdateUserInfoReq)(nil),                      // 6: essay.show.UpdateUserInfoReq
+	(*UpdatePasswordReq)(nil),                      // 7: essay.show.UpdatePasswordReq
+	(*UpdatePasswordResp)(nil),                     // 8: essay.show.UpdatePasswordResp
+	(*EssayEvaluateReq)(nil),                       // 9: essay.show.EssayEvaluateReq
+	(*EssayEvaluateResp)(nil),                      // 10: essay.show.EssayEvaluateResp
+	(*GetEssayEvaluateLogsReq)(nil),                // 11: essay.show.GetEssayEvaluateLogsReq
+	(*GetEssayEvaluateLogsResp)(nil),               // 12: essay.show.GetEssayEvaluateLogsResp
+	(*Log)(nil),                                    // 13: essay.show.Log
+	(*ApplySignedUrlReq)(nil),                      // 14: essay.show.ApplySignedUrlReq
+	(*ApplySignedUrlResp)(nil),                     // 15: essay.show.ApplySignedUrlResp
+	(*OCRReq)(nil),                                 // 16: essay.show.OCRReq
+	(*OCRResp)(nil),                                // 17: essay.show.OCRResp
+	(*Response)(nil),                               // 18: essay.show.Response
+	(*SendVerifyCodeReq)(nil),                      // 19: essay.show.SendVerifyCodeReq
+	(*CreateExerciseReq)(nil),                      // 20: essay.show.CreateExerciseReq
+	(*CreateExerciseResp)(nil),                     // 21: essay.show.CreateExerciseResp
+	(*ListSimpleExercisesReq)(nil),                 // 22: essay.show.ListSimpleExercisesReq
+	(*ListSimpleExercisesResp)(nil),                // 23: essay.show.ListSimpleExercisesResp
+	(*GetExerciseReq)(nil),                         // 24: essay.show.GetExerciseReq
+	(*GetExerciseResp)(nil),                        // 25: essay.show.GetExerciseResp
+	(*DoExerciseReq)(nil),                          // 26: essay.show.DoExerciseReq
+	(*DoExerciseResp)(nil),                         // 27: essay.show.DoExerciseResp
+	(*Exercise)(nil),                               // 28: essay.show.Exercise
+	(*Question)(nil),                               // 29: essay.show.Question
+	(*ChoiceQuestion)(nil),                         // 30: essay.show.ChoiceQuestion
+	(*Option)(nil),                                 // 31: essay.show.Option
+	(*History)(nil),                                // 32: essay.show.History
+	(*Records)(nil),                                // 33: essay.show.Records
+	(*Record)(nil),                                 // 34: essay.show.Record
+	(*GetUserInfoResp_Payload)(nil),                // 35: essay.show.GetUserInfoResp.Payload
+	(*ListSimpleExercisesResp_Record)(nil),         // 36: essay.show.ListSimpleExercisesResp.Record
+	(*ListSimpleExercisesResp_SimpleExercise)(nil), // 37: essay.show.ListSimpleExercisesResp.SimpleExercise
+	(*DoExerciseReq_Record)(nil),                   // 38: essay.show.DoExerciseReq.Record
+	(*basic.PaginationOptions)(nil),                // 39: basic.PaginationOptions
 }
 var file_essay_show_common_proto_depIdxs = []int32{
-	20, // 0: essay.show.GetUserInfoResp.payload:type_name -> essay.show.GetUserInfoResp.Payload
-	21, // 1: essay.show.GetEssayEvaluateLogsReq.paginationOptions:type_name -> basic.PaginationOptions
+	35, // 0: essay.show.GetUserInfoResp.payload:type_name -> essay.show.GetUserInfoResp.Payload
+	39, // 1: essay.show.GetEssayEvaluateLogsReq.paginationOptions:type_name -> basic.PaginationOptions
 	13, // 2: essay.show.GetEssayEvaluateLogsResp.logs:type_name -> essay.show.Log
-	3,  // [3:3] is the sub-list for method output_type
-	3,  // [3:3] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	28, // 3: essay.show.CreateExerciseResp.exercise:type_name -> essay.show.Exercise
+	39, // 4: essay.show.ListSimpleExercisesReq.paginationOptions:type_name -> basic.PaginationOptions
+	37, // 5: essay.show.ListSimpleExercisesResp.exercises:type_name -> essay.show.ListSimpleExercisesResp.SimpleExercise
+	28, // 6: essay.show.GetExerciseResp.exercise:type_name -> essay.show.Exercise
+	38, // 7: essay.show.DoExerciseReq.records:type_name -> essay.show.DoExerciseReq.Record
+	33, // 8: essay.show.DoExerciseResp.records:type_name -> essay.show.Records
+	29, // 9: essay.show.Exercise.question:type_name -> essay.show.Question
+	32, // 10: essay.show.Exercise.history:type_name -> essay.show.History
+	30, // 11: essay.show.Question.choiceQuestions:type_name -> essay.show.ChoiceQuestion
+	31, // 12: essay.show.ChoiceQuestion.options:type_name -> essay.show.Option
+	33, // 13: essay.show.History.records:type_name -> essay.show.Records
+	34, // 14: essay.show.Records.records:type_name -> essay.show.Record
+	36, // 15: essay.show.ListSimpleExercisesResp.SimpleExercise.records:type_name -> essay.show.ListSimpleExercisesResp.Record
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func file_essay_show_common_proto_init() {
@@ -1760,7 +3039,223 @@ func file_essay_show_common_proto_init() {
 			}
 		}
 		file_essay_show_common_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateExerciseReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateExerciseResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSimpleExercisesReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSimpleExercisesResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetExerciseReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetExerciseResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DoExerciseReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DoExerciseResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Exercise); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Question); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ChoiceQuestion); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Option); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*History); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Records); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Record); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetUserInfoResp_Payload); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSimpleExercisesResp_Record); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSimpleExercisesResp_SimpleExercise); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_essay_show_common_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DoExerciseReq_Record); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1780,7 +3275,7 @@ func file_essay_show_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_essay_show_common_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   21,
+			NumMessages:   39,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

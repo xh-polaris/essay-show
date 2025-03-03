@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"sync"
 
+	"encoding/json"
 	"github.com/bytedance/gopkg/util/gopool"
-	"github.com/cloudwego/hertz/pkg/common/json"
 )
 
 func JSONF(v any) string {
