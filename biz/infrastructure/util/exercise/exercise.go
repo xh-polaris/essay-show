@@ -45,6 +45,8 @@ func parseExercise(resp map[string]any) (*exercise.Exercise, error) {
 			switch k {
 			case "question":
 				cq.Question = v.(string)
+			case "explaion":
+				fallthrough
 			case "explanation":
 				cq.Explanation = v.(string)
 			case "id":
@@ -67,7 +69,7 @@ func parseExercise(resp map[string]any) (*exercise.Exercise, error) {
 		ChoiceQuestions: cqs,
 	}
 	// 作答记录
-	var records []*exercise.Records
+	records := make([]*exercise.Records, 0)
 	h := &exercise.History{
 		Records: records,
 	}
@@ -100,10 +102,11 @@ func buildBody(grade int64, m map[string]any) map[string]any {
 	body := make(map[string]any)
 
 	essay := ""
-	paragraphs := m["text"].([][]string)
+	paragraphs := m["text"].([]any)
 	for _, paragraph := range paragraphs {
+		paragraph := paragraph.([]any)
 		for _, sentence := range paragraph {
-			essay += sentence
+			essay += sentence.(string)
 		}
 	}
 

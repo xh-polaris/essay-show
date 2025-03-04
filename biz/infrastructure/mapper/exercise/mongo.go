@@ -20,6 +20,7 @@ const (
 
 type IMongoMapper interface {
 	Insert(ctx context.Context, e *Exercise) error
+	Update(ctx context.Context, e *Exercise) error
 	FindManyByLogId(ctx context.Context, logId string, p *basic.PaginationOptions) (exercise []*Exercise, total int64, err error)
 	FindOneById(ctx context.Context, id string) (*Exercise, error)
 }
@@ -44,6 +45,12 @@ func (m *MongoMapper) Insert(ctx context.Context, e *Exercise) error {
 	return err
 }
 
+func (m *MongoMapper) Update(ctx context.Context, e *Exercise) error {
+	key := prefixKeyCacheKey + e.ID.Hex()
+	_, err := m.conn.UpdateByID(ctx, key, e.ID, bson.M{"$set": e})
+	return err
+}
+
 func (m *MongoMapper) FindManyByLogId(ctx context.Context, logId string, p *basic.PaginationOptions) (exercise []*Exercise, total int64, err error) {
 	skip, limt := util.ParsePageOpt(p)
 
@@ -58,9 +65,9 @@ func (m *MongoMapper) FindManyByLogId(ctx context.Context, logId string, p *basi
 		Sort:  bson.M{consts.CreateTime: -1},
 	}
 
-	var data []*Exercise
+	data := make([]*Exercise, 0)
 
-	err = m.conn.Find(ctx, data, filter, opt)
+	err = m.conn.Find(ctx, &data, filter, opt)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -85,7 +92,7 @@ func (m *MongoMapper) FindOneById(ctx context.Context, id string) (*Exercise, er
 
 	key := prefixKeyCacheKey + id
 
-	var e *Exercise
+	e := &Exercise{}
 	err = m.conn.FindOne(ctx, key, e, filter)
 	return e, err
 }

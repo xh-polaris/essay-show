@@ -42,6 +42,8 @@ func NewProvider() (*Provider, error) {
 	exerciseMongoMapper := exercise.NewMongoMapper(configConfig)
 	exerciseService := service.ExerciseService{
 		ExerciseMapper: exerciseMongoMapper,
+		LogMapper:      logMongoMapper,
+		UserMapper:     mongoMapper,
 	}
 	providerProvider := &Provider{
 		Config:          configConfig,
