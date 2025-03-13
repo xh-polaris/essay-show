@@ -104,6 +104,7 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 		Code:     code,
 		Msg:      msg,
 		Response: result,
+		Id:       l.ID.Hex(),
 	}, nil
 }
 
