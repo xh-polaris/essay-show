@@ -20,6 +20,7 @@ type IExerciseService interface {
 	ListSimpleExercises(ctx context.Context, req *show.ListSimpleExercisesReq) (resp *show.ListSimpleExercisesResp, err error)
 	GetExercise(ctx context.Context, req *show.GetExerciseReq) (resp *show.GetExerciseResp, err error)
 	DoExercise(ctx context.Context, req *show.DoExerciseReq) (resp *show.DoExerciseResp, err error)
+	LikeExercise(ctx context.Context, req *show.LikeExerciseReq) (resp *show.Response, err error)
 }
 
 type ExerciseService struct {
@@ -273,4 +274,29 @@ func (s ExerciseService) DoExercise(ctx context.Context, req *show.DoExerciseReq
 		Records: dto,
 	}
 	return
+}
+
+func (s ExerciseService) LikeExercise(ctx context.Context, req *show.LikeExerciseReq) (resp *show.Response, err error) {
+	e, err := s.ExerciseMapper.FindOneById(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	if req.Like > 1 || req.Like < -1 {
+		return &show.Response{
+			Code: 999,
+			Msg:  "Like行为超出范围",
+		}, nil
+	}
+	e.Like = req.Like
+	err = s.ExerciseMapper.Update(ctx, e)
+	if err != nil {
+		return &show.Response{
+			Code: 999,
+			Msg:  "标记失败",
+		}, nil
+	}
+	return &show.Response{
+		Code: 0,
+		Msg:  "标记成功",
+	}, nil
 }

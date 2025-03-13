@@ -10,12 +10,14 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util"
+	logx "github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
 	"time"
 )
 
 type IEssayService interface {
 	EssayEvaluate(ctx context.Context, req *show.EssayEvaluateReq) (resp *show.EssayEvaluateResp, err error)
 	GetEvaluateLogs(ctx context.Context, req *show.GetEssayEvaluateLogsReq) (resp *show.GetEssayEvaluateLogsResp, err error)
+	LikeEvaluate(ctx context.Context, req *show.LikeEvaluateReq) (resp *show.Response, err error)
 }
 
 type EssayService struct {
@@ -133,5 +135,25 @@ func (s *EssayService) GetEvaluateLogs(ctx context.Context, req *show.GetEssayEv
 	return &show.GetEssayEvaluateLogsResp{
 		Total: total,
 		Logs:  logs,
+	}, nil
+}
+
+func (s *EssayService) LikeEvaluate(ctx context.Context, req *show.LikeEvaluateReq) (resp *show.Response, err error) {
+	l, err := s.LogMapper.FindOne(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	l.Like = req.Like
+	err = s.LogMapper.Update(ctx, l)
+	if err != nil {
+		logx.Error(err.Error())
+		return &show.Response{
+			Code: 0,
+			Msg:  "标记失败",
+		}, nil
+	}
+	return &show.Response{
+		Code: 0,
+		Msg:  "标记成功",
 	}, nil
 }

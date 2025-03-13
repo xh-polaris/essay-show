@@ -11,6 +11,7 @@ type Log struct {
 	Grade      int64              `bson:"grade" json:"grade"`
 	Ocr        []string           `bson:"ocr" json:"ocr"`
 	Response   string             `bson:"response" json:"response"`
+	Like       int64              `bson:"like" json:"like"`
 	Status     int                `bson:"status" json:"status"`
 	CreateTime time.Time          `bson:"create_time,omitempty" json:"createTime"`
 }

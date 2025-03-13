@@ -75,3 +75,19 @@ func DoExercise(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.ExerciseService.DoExercise(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// LikeExercise .
+// @router /exercise/like [POST]
+func LikeExercise(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.LikeExerciseReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.ExerciseService.LikeExercise(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

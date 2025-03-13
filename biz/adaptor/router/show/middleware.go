@@ -105,3 +105,13 @@ func _listsimpleexercisesMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _likeexerciseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _likeevaluateMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -22,6 +22,7 @@ type IMongoMapper interface {
 	Insert(ctx context.Context, l *Log) error
 	FindMany(ctx context.Context, userId string, p basic.PaginationOptions) (logs []*Log, total int64, err error)
 	FindOne(ctx context.Context, id string) (l *Log, err error)
+	Update(ctx context.Context, l *Log) error
 }
 
 type MongoMapper struct {
@@ -82,4 +83,10 @@ func (m *MongoMapper) FindOne(ctx context.Context, id string) (l *Log, err error
 	l = &Log{}
 	err = m.conn.FindOne(ctx, key, l, filter)
 	return l, err
+}
+
+func (m *MongoMapper) Update(ctx context.Context, l *Log) error {
+	key := prefixKeyCacheKey + l.ID.Hex()
+	_, err := m.conn.UpdateByID(ctx, key, l.ID, bson.M{"$set": l})
+	return err
 }

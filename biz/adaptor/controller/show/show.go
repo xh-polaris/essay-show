@@ -92,6 +92,22 @@ func GetEvaluateLogs(ctx context.Context, c *app.RequestContext) {
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
+// LikeEvaluate .
+// @router /essay/like [POST]
+func LikeEvaluate(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.LikeEvaluateReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.EssayService.LikeEvaluate(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
 // UpdateUserInfo .
 // @router /user/update [POST]
 func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
