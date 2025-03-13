@@ -7,7 +7,9 @@ import (
 	"github.com/xh-polaris/essay-show/biz/adaptor"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
 	"github.com/xh-polaris/essay-show/provider"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
+	"net/http"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
@@ -26,6 +28,7 @@ func Init() {
 	provider.Init()
 	hlog.SetLogger(logx.NewHlogLogger())
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(b3.New(), propagation.Baggage{}, propagation.TraceContext{}))
+	http.DefaultTransport = otelhttp.NewTransport(http.DefaultTransport)
 }
 
 func main() {
