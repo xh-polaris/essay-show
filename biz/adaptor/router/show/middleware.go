@@ -115,3 +115,8 @@ func _likeevaluateMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _dailyattendMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -9,6 +9,7 @@ package provider
 import (
 	"github.com/xh-polaris/essay-show/biz/application/service"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
@@ -23,8 +24,10 @@ func NewProvider() (*Provider, error) {
 		return nil, err
 	}
 	mongoMapper := user.NewMongoMapper(configConfig)
+	attendMongoMapper := attend.NewMongoMapper(configConfig)
 	userService := service.UserService{
-		UserMapper: mongoMapper,
+		UserMapper:   mongoMapper,
+		AttendMapper: attendMongoMapper,
 	}
 	logMongoMapper := log.NewMongoMapper(configConfig)
 	essayService := service.EssayService{

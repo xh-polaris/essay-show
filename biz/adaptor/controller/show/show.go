@@ -140,6 +140,22 @@ func UpdatePassword(ctx context.Context, c *app.RequestContext) {
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
+// DailyAttend .
+// @router /user/daily_attend [GET]
+func DailyAttend(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.DailyAttendReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.DailyAttend(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
 // OCR .
 // @router /sts/ocr [POST]
 func OCR(ctx context.Context, c *app.RequestContext) {

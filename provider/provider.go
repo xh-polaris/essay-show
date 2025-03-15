@@ -4,6 +4,7 @@ import (
 	"github.com/google/wire"
 	"github.com/xh-polaris/essay-show/biz/application/service"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
@@ -49,6 +50,7 @@ var InfrastructureSet = wire.NewSet(
 	user.NewMongoMapper,
 	log.NewMongoMapper,
 	exercise.NewMongoMapper,
+	attend.NewMongoMapper,
 	RpcSet,
 )
 

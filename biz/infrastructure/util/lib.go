@@ -2,6 +2,7 @@ package util
 
 import (
 	"errors"
+	"github.com/xh-polaris/essay-show/biz/application/dto/essay/show"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
 	"google.golang.org/grpc/codes"
@@ -55,4 +56,11 @@ func Contains[T comparable](s []T, e T) bool {
 		}
 	}
 	return false
+}
+
+func Succeed(msg string) (*show.Response, error) {
+	return &show.Response{
+		Code: 0,
+		Msg:  msg,
+	}, nil
 }
