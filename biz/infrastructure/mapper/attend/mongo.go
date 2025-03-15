@@ -38,15 +38,13 @@ func (m *MongoMapper) Insert(ctx context.Context, userId string) (*Attend, error
 		UserId:    userId,
 		Timestamp: time.Time{},
 	}
-	key := prefixKeyCacheKey + userId
-	_, err := m.conn.InsertOne(ctx, key, a)
+	_, err := m.conn.InsertOneNoCache(ctx, a)
 	return a, err
 }
 
 func (m *MongoMapper) FindOneByUserId(ctx context.Context, userId string) (a *Attend, err error) {
 	a = &Attend{}
-	key := prefixKeyCacheKey + userId
-	err = m.conn.FindOne(ctx, key, a, bson.M{consts.UserID: userId})
+	err = m.conn.FindOneNoCache(ctx, a, bson.M{consts.UserID: userId})
 	switch {
 	case err == nil:
 		return a, nil
@@ -58,7 +56,6 @@ func (m *MongoMapper) FindOneByUserId(ctx context.Context, userId string) (a *At
 }
 
 func (m *MongoMapper) Update(ctx context.Context, a *Attend) error {
-	key := prefixKeyCacheKey + a.UserId
-	_, err := m.conn.UpdateByID(ctx, key, a.ID, bson.M{"$set": a})
+	_, err := m.conn.UpdateByIDNoCache(ctx, a.ID, bson.M{"$set": a})
 	return err
 }

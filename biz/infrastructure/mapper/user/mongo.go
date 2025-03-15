@@ -21,7 +21,7 @@ type IMongoMapper interface {
 	Update(ctx context.Context, user *User) error
 	FindOne(ctx context.Context, id string) (*User, error)
 	FindOneByPhone(ctx context.Context, id string) (*User, error)
-	IncreaseCount(ctx context.Context, id string) error
+	UpdateCount(ctx context.Context, id string, increment int64) error
 }
 
 type MongoMapper struct {
@@ -91,14 +91,5 @@ func (m *MongoMapper) UpdateCount(ctx context.Context, id string, increment int6
 			"count": increment,
 		},
 	})
-	return err
-}
-
-func (m *MongoMapper) IncreaseCount(ctx context.Context, id string) error {
-	oid, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		return consts.ErrInvalidObjectId
-	}
-	_, err = m.conn.UpdateByIDNoCache(ctx, oid, bson.M{"$inc": bson.M{"count": 1}})
 	return err
 }
