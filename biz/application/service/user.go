@@ -68,7 +68,7 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		return nil, err
 	}
 	now := time.Now()
-	aUser := user.User{
+	u := user.User{
 		ID:         oid,
 		Username:   req.Name,
 		Phone:      req.AuthId,
@@ -78,11 +78,11 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		UpdateTime: now,
 	}
 	if req.AuthType == "wechat-phone" {
-		aUser.Phone = signUpResponse["option"].(string)
+		u.Phone = signUpResponse["option"].(string)
 	}
 
 	// 向数据库中插入数据
-	err = s.UserMapper.Insert(ctx, &aUser)
+	err = s.UserMapper.Insert(ctx, &u)
 	if err != nil {
 		return nil, consts.ErrSignUp
 	}
@@ -92,17 +92,17 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		Id:           userId,
 		AccessToken:  authorization,
 		AccessExpire: int64(signUpResponse["accessExpire"].(float64)),
-		Name:         aUser.Username,
+		Name:         u.Username,
 	}, nil
 }
 
 func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.SignInResp, error) {
-	var aUser *user.User
+	var u *user.User
 	var err error
 	if req.AuthType == "phone" {
 		// 查找数据库判断手机号是否注册过
-		aUser, err = s.UserMapper.FindOneByPhone(ctx, req.AuthId)
-		if errors.Is(err, consts.ErrNotFound) || aUser == nil { // 未找到，说明没有注册
+		u, err = s.UserMapper.FindOneByPhone(ctx, req.AuthId)
+		if errors.Is(err, consts.ErrNotFound) || u == nil { // 未找到，说明没有注册
 			return nil, consts.ErrNotSignUp
 		} else if err != nil {
 			return nil, consts.ErrSignUp
@@ -121,15 +121,15 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	}
 
 	// 托底逻辑，如果不注册直接登录也行
-	aUser, err = s.UserMapper.FindOne(ctx, userId)
-	if errors.Is(err, consts.ErrNotFound) || aUser == nil {
+	u, err = s.UserMapper.FindOne(ctx, userId)
+	if errors.Is(err, consts.ErrNotFound) || u == nil {
 		// 初始化用户
 		oid, err2 := primitive.ObjectIDFromHex(userId)
 		if err2 != nil {
 			return nil, err2
 		}
 		now := time.Now()
-		aUser = &user.User{
+		u = &user.User{
 			ID:         oid,
 			Username:   "未设置用户名",
 			Phone:      req.AuthId,
@@ -139,10 +139,10 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 			UpdateTime: now,
 		}
 		if req.AuthType == "wechat-phone" {
-			aUser.Phone = signInResponse["option"].(string)
+			u.Phone = signInResponse["option"].(string)
 		}
 
-		err = s.UserMapper.Insert(ctx, aUser)
+		err = s.UserMapper.Insert(ctx, u)
 		if err != nil {
 			return nil, consts.ErrSignUp
 		}
@@ -150,12 +150,24 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 		return nil, consts.ErrSignIn
 	}
 
-	return &show.SignInResp{
+	resp := &show.SignInResp{
 		Id:           userId,
 		AccessToken:  signInResponse["accessToken"].(string),
 		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
-		Name:         aUser.Username,
-	}, nil
+		Name:         u.Username,
+	}
+
+	// 获取签到记录
+	a, err := s.findAttend(ctx, u.ID.Hex())
+	if err != nil {
+		return nil, consts.ErrSignIn
+	}
+
+	if !a.Timestamp.IsZero() && a.Timestamp.Day() == time.Now().Day() {
+		resp.Attend = 1
+	}
+
+	return resp, nil
 }
 
 func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq) (*show.GetUserInfoResp, error) {
@@ -163,7 +175,7 @@ func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq)
 	if userMeta.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
 	}
-	aUser, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
+	u, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
 	if err != nil {
 		return &show.GetUserInfoResp{
 			Code:    -1,
@@ -175,9 +187,9 @@ func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq)
 		Code: 0,
 		Msg:  "查询成功",
 		Payload: &show.GetUserInfoResp_Payload{
-			Name:  aUser.Username,
-			Count: aUser.Count,
-			Phone: aUser.Phone,
+			Name:  u.Username,
+			Count: u.Count,
+			Phone: u.Phone,
 		},
 	}, nil
 }
@@ -190,18 +202,18 @@ func (s *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserIn
 	}
 
 	// 根据用户id查询这个用户
-	aUser, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
+	u, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
 	if err != nil {
 		return nil, consts.ErrNotFound
 	}
 
 	// 更新用户信息
-	aUser.Username = req.Name
-	aUser.School = req.School
-	aUser.Grade = req.Grade
+	u.Username = req.Name
+	u.School = req.School
+	u.Grade = req.Grade
 
 	// 存入新的用户信息
-	err = s.UserMapper.Update(ctx, aUser)
+	err = s.UserMapper.Update(ctx, u)
 	if err != nil {
 		return nil, consts.ErrUpdate
 	}
@@ -221,14 +233,14 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *show.UpdatePasswo
 	}
 
 	// 根据用户id查询这个用户
-	aUser, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
+	u, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
 	if err != nil {
 		return nil, consts.ErrNotFound
 	}
 
 	// 在中台注册账户
 	httpClient := util.NewHttpClient()
-	signInResponse, err := httpClient.SignUp(consts.Phone, aUser.Phone, &req.VerifyCode)
+	signInResponse, err := httpClient.SignUp(consts.Phone, u.Phone, &req.VerifyCode)
 	if err != nil {
 		return nil, consts.ErrVerifyCode
 	}
@@ -240,10 +252,10 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *show.UpdatePasswo
 		return nil, consts.ErrSignUp
 	}
 	return &show.UpdatePasswordResp{
-		Id:           aUser.ID.Hex(),
+		Id:           u.ID.Hex(),
 		AccessToken:  authorization,
 		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
-		Name:         aUser.Username,
+		Name:         u.Username,
 	}, nil
 }
 
@@ -255,14 +267,8 @@ func (s *UserService) DailyAttend(ctx context.Context, req *show.DailyAttendReq)
 	}
 
 	// 查询attend记录
-	a, err := s.AttendMapper.FindOneByUserId(ctx, userMeta.GetUserId())
-	if errors.Is(err, consts.ErrNotFound) {
-		// 首次签到
-		a, err = s.AttendMapper.Insert(ctx, userMeta.GetUserId())
-		if err != nil {
-			return nil, consts.ErrDailyAttend
-		}
-	} else if err != nil {
+	a, err := s.findAttend(ctx, userMeta.GetUserId())
+	if err != nil {
 		return nil, consts.ErrDailyAttend
 	}
 
@@ -279,10 +285,24 @@ func (s *UserService) DailyAttend(ctx context.Context, req *show.DailyAttendReq)
 	}
 
 	// 增加次数
-	err = s.UserMapper.IncreaseCount(ctx, userMeta.GetUserId())
+	err = s.UserMapper.UpdateCount(ctx, userMeta.GetUserId(), 1)
 	if err != nil {
 		return nil, consts.ErrDailyAttend
 	}
 
 	return util.Succeed("签到成功")
+}
+
+func (s *UserService) findAttend(ctx context.Context, userId string) (*attend.Attend, error) {
+	a, err := s.AttendMapper.FindOneByUserId(ctx, userId)
+	if errors.Is(err, consts.ErrNotFound) {
+		// 首次签到
+		a, err = s.AttendMapper.Insert(ctx, userId)
+		if err != nil {
+			return nil, err
+		}
+	} else if err != nil {
+		return nil, err
+	}
+	return a, nil
 }
