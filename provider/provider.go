@@ -6,6 +6,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/invitation"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/rpc/platform_sts"
@@ -51,6 +52,8 @@ var InfrastructureSet = wire.NewSet(
 	log.NewMongoMapper,
 	exercise.NewMongoMapper,
 	attend.NewMongoMapper,
+	invitation.NewCodeMongoMapper,
+	invitation.NewLogMongoMapper,
 	RpcSet,
 )
 

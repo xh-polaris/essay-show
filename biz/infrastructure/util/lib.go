@@ -64,3 +64,10 @@ func Succeed(msg string) (*show.Response, error) {
 		Msg:  msg,
 	}, nil
 }
+
+func Fail(code int64, msg string) *show.Response {
+	return &show.Response{
+		Code: code,
+		Msg:  msg,
+	}
+}

@@ -11,6 +11,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/invitation"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/rpc/platform_sts"
@@ -25,13 +26,17 @@ func NewProvider() (*Provider, error) {
 	}
 	mongoMapper := user.NewMongoMapper(configConfig)
 	attendMongoMapper := attend.NewMongoMapper(configConfig)
+	codeMongoMapper := invitation.NewCodeMongoMapper(configConfig)
+	logMongoMapper := invitation.NewLogMongoMapper(configConfig)
 	userService := service.UserService{
 		UserMapper:   mongoMapper,
 		AttendMapper: attendMongoMapper,
+		CodeMapper:   codeMongoMapper,
+		LogMapper:    logMongoMapper,
 	}
-	logMongoMapper := log.NewMongoMapper(configConfig)
+	mongoMapper2 := log.NewMongoMapper(configConfig)
 	essayService := service.EssayService{
-		LogMapper:  logMongoMapper,
+		LogMapper:  mongoMapper2,
 		UserMapper: mongoMapper,
 	}
 	client := platform_sts.NewPlatformSts(configConfig)
@@ -45,7 +50,7 @@ func NewProvider() (*Provider, error) {
 	exerciseMongoMapper := exercise.NewMongoMapper(configConfig)
 	exerciseService := service.ExerciseService{
 		ExerciseMapper: exerciseMongoMapper,
-		LogMapper:      logMongoMapper,
+		LogMapper:      mongoMapper2,
 		UserMapper:     mongoMapper,
 	}
 	providerProvider := &Provider{

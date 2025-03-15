@@ -31,8 +31,9 @@ const (
 
 // 默认值
 const (
-	DefaultCount = 30
-	AppId        = 14
-	Like         = 1
-	DisLike      = -1
+	DefaultCount     = 30
+	AppId            = 14
+	Like             = 1
+	DisLike          = -1
+	InvitationReward = 10
 )

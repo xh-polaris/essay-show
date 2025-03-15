@@ -43,10 +43,17 @@ func Register(r *server.Hertz) {
 	{
 		_user := root.Group("/user", _userMw()...)
 		_user.GET("/daily_attend", append(_dailyattendMw(), show.DailyAttend)...)
+		_daily_attend := _user.Group("/daily_attend", _daily_attendMw()...)
+		_daily_attend.GET("/get", append(_getdailyattendMw(), show.GetDailyAttend)...)
 		_user.GET("/info", append(_getuserinfoMw(), show.GetUserInfo)...)
 		_user.POST("/sign_in", append(_signinMw(), show.SignIn)...)
 		_user.POST("/sign_up", append(_signupMw(), show.SignUp)...)
 		_user.POST("/update", append(_updateuserinfoMw(), show.UpdateUserInfo)...)
 		_user.POST("/update_password", append(_updatepasswordMw(), show.UpdatePassword)...)
+		{
+			_invitation := _user.Group("/invitation", _invitationMw()...)
+			_invitation.GET("/code", append(_getinvitationcodeMw(), show.GetInvitationCode)...)
+			_invitation.POST("/fill", append(_fillinvitationcodeMw(), show.FillInvitationCode)...)
+		}
 	}
 }

@@ -3,11 +3,13 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/google/wire"
 	"github.com/xh-polaris/essay-show/biz/adaptor"
 	"github.com/xh-polaris/essay-show/biz/application/dto/essay/show"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/invitation"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -21,10 +23,15 @@ type IUserService interface {
 	UpdateUserInfo(ctx context.Context, req *show.UpdateUserInfoReq) (*show.Response, error)
 	UpdatePassword(ctx context.Context, req *show.UpdatePasswordReq) (*show.UpdatePasswordResp, error)
 	DailyAttend(ctx context.Context, req *show.DailyAttendReq) (*show.Response, error)
+	GetDailyAttend(ctx context.Context, req *show.GetDailyAttendReq) (*show.GetDailyAttendResp, error)
+	FillInvitationCode(ctx context.Context, req *show.FillInvitationCodeReq) (*show.Response, error)
+	GetInvitationCode(ctx context.Context, req *show.GetInvitationCodeReq) (*show.GetInvitationCodeResp, error)
 }
 type UserService struct {
 	UserMapper   *user.MongoMapper
 	AttendMapper *attend.MongoMapper
+	CodeMapper   *invitation.CodeMongoMapper
+	LogMapper    *invitation.LogMongoMapper
 }
 
 var UserServiceSet = wire.NewSet(
@@ -157,16 +164,6 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 		Name:         u.Username,
 	}
 
-	// 获取签到记录
-	a, err := s.findAttend(ctx, u.ID.Hex())
-	if err != nil {
-		return nil, consts.ErrSignIn
-	}
-
-	if !a.Timestamp.IsZero() && a.Timestamp.Day() == time.Now().Day() {
-		resp.Attend = 1
-	}
-
 	return resp, nil
 }
 
@@ -273,7 +270,7 @@ func (s *UserService) DailyAttend(ctx context.Context, req *show.DailyAttendReq)
 	}
 
 	// 今日有签到记录且不是第一次签到
-	if a.Timestamp.Day() == time.Now().Day() && !a.Timestamp.IsZero() {
+	if time.Unix(a.Timestamp.Unix(), 0).Day() == time.Now().Day() && !a.Timestamp.IsZero() {
 		return nil, consts.ErrRepeatDailyAttend
 	}
 
@@ -291,6 +288,98 @@ func (s *UserService) DailyAttend(ctx context.Context, req *show.DailyAttendReq)
 	}
 
 	return util.Succeed("签到成功")
+}
+
+func (s *UserService) GetDailyAttend(ctx context.Context, req *show.GetDailyAttendReq) (*show.GetDailyAttendResp, error) {
+	resp := &show.GetDailyAttendResp{
+		Code:   0,
+		Msg:    "success",
+		Attend: 0,
+	}
+
+	// 用户信息
+	userMeta := adaptor.ExtractUserMeta(ctx)
+	if userMeta.GetUserId() == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	a, err := s.findAttend(ctx, userMeta.GetUserId())
+	if err != nil {
+		return nil, err
+	}
+	fmt.Print(time.Now().Format("2006-01-02 15:04:05"))
+	if !a.Timestamp.IsZero() && time.Unix(a.Timestamp.Unix(), 0).Day() == time.Now().Day() {
+		resp.Attend = 1
+	}
+
+	return resp, nil
+}
+
+func (s *UserService) FillInvitationCode(ctx context.Context, req *show.FillInvitationCodeReq) (*show.Response, error) {
+	// 用户信息
+	userMeta := adaptor.ExtractUserMeta(ctx)
+	if userMeta.GetUserId() == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	// 获取邀请码对应邀请者
+	c, err := s.CodeMapper.FindOneByCode(ctx, req.InvitationCode)
+	if err != nil {
+		return nil, consts.ErrNotFound
+	}
+
+	inviter := c.UserId
+	invitee := userMeta.GetUserId()
+
+	if invitee == inviter {
+		return nil, consts.ErrInvitation
+	}
+
+	// 尝试获取邀请记录
+	l, err := s.LogMapper.FindOneByInvitee(ctx, invitee)
+	if err == nil && l != nil {
+		// 已填过邀请码
+		return nil, consts.ErrRepeatInvitation
+	} else if !errors.Is(err, consts.ErrNotFound) {
+		// 异常
+		return nil, err
+	}
+
+	// 插入邀请记录
+	err = s.LogMapper.Insert(ctx, inviter, invitee)
+	if err != nil {
+		return nil, consts.ErrInvitation
+	}
+
+	err = s.UserMapper.UpdateCount(ctx, inviter, consts.InvitationReward)
+	if err != nil {
+		return nil, err
+	}
+	return util.Succeed("success")
+}
+
+func (s *UserService) GetInvitationCode(ctx context.Context, req *show.GetInvitationCodeReq) (*show.GetInvitationCodeResp, error) {
+	// 用户信息
+	userMeta := adaptor.ExtractUserMeta(ctx)
+	if userMeta.GetUserId() == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	c, err := s.CodeMapper.FindOneByUserId(ctx, userMeta.GetUserId())
+	if errors.Is(err, consts.ErrNotFound) {
+		c, err = s.CodeMapper.Insert(ctx, userMeta.GetUserId())
+		if err != nil {
+			return nil, err
+		}
+	} else if err != nil {
+		return nil, err
+	}
+
+	return &show.GetInvitationCodeResp{
+		Code:           0,
+		Msg:            "success",
+		InvitationCode: c.Code,
+	}, nil
 }
 
 func (s *UserService) findAttend(ctx context.Context, userId string) (*attend.Attend, error) {

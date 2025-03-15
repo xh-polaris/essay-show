@@ -120,3 +120,28 @@ func _dailyattendMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _invitationMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getinvitationcodeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _fillinvitationcodeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _daily_attendMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getdailyattendMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -140,6 +140,54 @@ func UpdatePassword(ctx context.Context, c *app.RequestContext) {
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
+// GetInvitationCode .
+// @router /user/invitation/code [GET]
+func GetInvitationCode(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.GetInvitationCodeReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.GetInvitationCode(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// FillInvitationCode .
+// @router /user/invitation/fill [POST]
+func FillInvitationCode(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.FillInvitationCodeReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.FillInvitationCode(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// GetDailyAttend .
+// @router /user/daily_attend/get [GET]
+func GetDailyAttend(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.GetDailyAttendReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.GetDailyAttend(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
 // DailyAttend .
 // @router /user/daily_attend [GET]
 func DailyAttend(ctx context.Context, c *app.RequestContext) {
