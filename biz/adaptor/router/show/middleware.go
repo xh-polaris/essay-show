@@ -145,3 +145,38 @@ func _getdailyattendMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _feedbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getallfeedbacksMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getfeedbackdetailMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _replyfeedbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updatefeedbackstatusMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _submitfeedbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getuserfeedbacksMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

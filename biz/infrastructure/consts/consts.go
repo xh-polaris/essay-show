@@ -37,3 +37,19 @@ const (
 	DisLike          = -1
 	InvitationReward = 10
 )
+
+// 反馈类型
+const (
+	FeedbackTypeSuggestion = 1 // 建议
+	FeedbackTypeBugReport  = 2 // 错误报告
+	FeedbackTypeFeatureReq = 3 // 功能请求
+	FeedbackTypeOther      = 4 // 其他
+)
+
+// 反馈状态
+const (
+	FeedbackStatusPending    = 0 // 待处理
+	FeedbackStatusProcessing = 1 // 处理中
+	FeedbackStatusResolved   = 2 // 已解决
+	FeedbackStatusRejected   = 3 // 已拒绝
+)

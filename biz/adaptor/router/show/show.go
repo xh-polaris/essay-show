@@ -35,6 +35,15 @@ func Register(r *server.Hertz) {
 		}
 	}
 	{
+		_feedback := root.Group("/feedback", _feedbackMw()...)
+		_feedback.GET("/all", append(_getallfeedbacksMw(), show.GetAllFeedbacks)...)
+		_feedback.GET("/detail", append(_getfeedbackdetailMw(), show.GetFeedbackDetail)...)
+		_feedback.POST("/reply", append(_replyfeedbackMw(), show.ReplyFeedback)...)
+		_feedback.POST("/status", append(_updatefeedbackstatusMw(), show.UpdateFeedbackStatus)...)
+		_feedback.POST("/submit", append(_submitfeedbackMw(), show.SubmitFeedback)...)
+		_feedback.GET("/user", append(_getuserfeedbacksMw(), show.GetUserFeedbacks)...)
+	}
+	{
 		_sts := root.Group("/sts", _stsMw()...)
 		_sts.POST("/apply", append(_applysignedurlMw(), show.ApplySignedUrl)...)
 		_sts.POST("/ocr", append(_ocrMw(), show.OCR)...)

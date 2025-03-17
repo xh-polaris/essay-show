@@ -2,6 +2,7 @@ package consts
 
 import (
 	"errors"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -63,4 +64,11 @@ var (
 // 练习相关错误
 var (
 	ErrJsonLog = NewErrno(codes.Code(3001), errors.New("批改结果不符合json格式，请重试批改"))
+)
+
+// 反馈相关错误
+var (
+	ErrFeedbackSubmit = NewErrno(codes.Code(4001), errors.New("提交反馈失败，请重试"))
+	ErrFeedbackUpdate = NewErrno(codes.Code(4002), errors.New("更新反馈状态失败"))
+	ErrFeedbackReply  = NewErrno(codes.Code(4003), errors.New("回复反馈失败"))
 )
