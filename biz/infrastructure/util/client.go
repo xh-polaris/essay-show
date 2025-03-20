@@ -2,8 +2,6 @@ package util
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
@@ -11,7 +9,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"time"
 )
 
 var client *HttpClient
@@ -34,14 +31,6 @@ func GetHttpClient() *HttpClient {
 		client = NewHttpClient()
 	}
 	return client
-}
-
-type evaluateRequestBody struct {
-	Key       string `json:"key"`
-	Method    string `json:"method"`
-	Action    string `json:"action"`
-	Params    string `json:"params"` // string 类型
-	Timestamp int64  `json:"timestamp"`
 }
 
 type params struct {
@@ -203,77 +192,56 @@ func (c *HttpClient) SendVerifyCode(authType string, authId string) (map[string]
 }
 
 // BetaEvaluate 用Beta接口进行批改
-func (c *HttpClient) BetaEvaluate(title string, text string) (map[string]interface{}, error) {
+func (c *HttpClient) BetaEvaluate(title string, text string, grade *int64, essayType *string) (map[string]interface{}, error) {
 
-	//body := make(map[string]interface{})
-	jsonParams, err := json.Marshal(params{
-		Title:   title,
-		Content: text,
-	})
-	if err != nil {
-		return nil, consts.ErrInvalidParams
+	body := make(map[string]interface{})
+
+	// 请求体
+	body["title"] = title
+	body["content"] = text
+	if grade != nil {
+		body["grade"] = *grade
+	}
+	if essayType != nil {
+		body["essayType"] = *essayType
 	}
 
-	body := evaluateRequestBody{
-		Key:       config.GetConfig().CallKey,
-		Method:    consts.Post,
-		Action:    consts.Beta,
-		Params:    string(jsonParams),
-		Timestamp: time.Now().Unix(),
-	}
-
-	//body["key"] = config.GetConfig().CallKey
-	//body["method"] = consts.Post
-	//body["action"] = consts.Beta
-	//body["params"] = string(jsonParams)
-	//now := time.Now().Unix()
-	//body["timestamp"] = now
-
+	// 请求头
 	header := make(map[string]string)
 	header["Content-Type"] = consts.ContentTypeJson
 	header["Charset"] = consts.CharSetUTF8
-	header["Signature"] = signature(body)
 
 	// 如果是测试环境则向测试环境发送请求
-	//if config.GetConfig().State == "test" {
-	//	header["X-Xh-Env"] = "test"
-	//}
-	header["X-Xh-Env"] = "test" // 暂时都先用测试环境批改
+	if config.GetConfig().State == "test" {
+		header["X-Xh-Env"] = "test"
+	}
 
-	resp, err := c.SendRequest(consts.Post, consts.OpenApiCallUrl, header, body)
+	resp, err := c.SendRequest(consts.Post, consts.BetaEvaluateUrl, header, body)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-// BeeOCR 蜜蜂ocr
-func (c *HttpClient) BeeOCR(url string) (map[string]interface{}, error) {
+// BeeTitleUrlOCR 蜜蜂ocr - 带标题
+func (c *HttpClient) BeeTitleUrlOCR(images []string, left string) (map[string]interface{}, error) {
 	body := make(map[string]interface{})
-	body["image_url"] = url
+	// 图片url列表
+	body["images"] = images
+	// 保留类型
+	if len(left) > 0 {
+		body["leftType"] = left
+	}
 
 	header := make(map[string]string)
 	header["Content-Type"] = consts.ContentTypeJson
-	header["x-app-secret"] = config.GetConfig().OCRSecret
-	header["x-app-key"] = config.GetConfig().OCRKey
+	if config.GetConfig().State == "test" {
+		header["X-Xh-Env"] = "test"
+	}
 
-	resp, err := c.SendRequest(consts.Post, consts.BeeOCRUrl, header, body)
+	resp, err := c.SendRequest(consts.Post, consts.BeeTitleUrlOcr, header, body)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
-}
-
-func signature(b evaluateRequestBody) string {
-
-	bodyBytes, err := json.Marshal(b)
-	if err != nil {
-		return ""
-	}
-
-	// 签名
-	hash := sha256.Sum256(bodyBytes)
-	hashedSign := hex.EncodeToString(hash[:])
-
-	return hashedSign
 }

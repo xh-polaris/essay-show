@@ -26,10 +26,7 @@ type Config struct {
 		URL string
 		DB  string
 	}
-	Cache     cache.CacheConf
-	CallKey   string
-	OCRSecret string
-	OCRKey    string
+	Cache cache.CacheConf
 }
 
 func NewConfig() (*Config, error) {

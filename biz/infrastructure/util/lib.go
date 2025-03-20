@@ -71,3 +71,17 @@ func Fail(code int64, msg string) *show.Response {
 		Msg:  msg,
 	}
 }
+
+//func signature(b evaluateRequestBody) string {
+//
+//	bodyBytes, err := json.Marshal(b)
+//	if err != nil {
+//		return ""
+//	}
+//
+//	// 签名
+//	hash := sha256.Sum256(bodyBytes)
+//	hashedSign := hex.EncodeToString(hash[:])
+//
+//	return hashedSign
+//}
