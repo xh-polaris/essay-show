@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/google/wire"
 	"github.com/xh-polaris/essay-show/biz/adaptor"
 	"github.com/xh-polaris/essay-show/biz/application/dto/essay/show"
@@ -258,31 +257,35 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *show.UpdatePasswo
 
 func (s *UserService) DailyAttend(ctx context.Context, req *show.DailyAttendReq) (*show.Response, error) {
 	// 用户信息
-	userMeta := adaptor.ExtractUserMeta(ctx)
-	if userMeta.GetUserId() == "" {
+	meta := adaptor.ExtractUserMeta(ctx)
+	if meta.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
 	}
 
-	// 查询attend记录
-	a, err := s.findAttend(ctx, userMeta.GetUserId())
-	if err != nil {
+	// 查询最近的attend记录
+	a, err := s.findAttend(ctx, meta.GetUserId())
+	if err != nil && !errors.Is(err, consts.ErrNotFound) {
 		return nil, consts.ErrDailyAttend
 	}
 
 	// 今日有签到记录且不是第一次签到
-	if time.Unix(a.Timestamp.Unix(), 0).Day() == time.Now().Day() && !a.Timestamp.IsZero() {
+	if a != nil && time.Unix(a.Timestamp.Unix(), 0).Day() == time.Now().Day() && !a.Timestamp.IsZero() {
 		return nil, consts.ErrRepeatDailyAttend
 	}
 
-	// 更新签到时间
-	a.Timestamp = time.Now()
-	err = s.AttendMapper.Update(ctx, a)
+	// 插入新的签到记录
+	_a := &attend.Attend{
+		ID:        primitive.NewObjectID(),
+		UserId:    meta.GetUserId(),
+		Timestamp: time.Now(),
+	}
+	err = s.AttendMapper.Insert(ctx, _a)
 	if err != nil {
 		return nil, consts.ErrDailyAttend
 	}
 
 	// 增加次数
-	err = s.UserMapper.UpdateCount(ctx, userMeta.GetUserId(), 1)
+	err = s.UserMapper.UpdateCount(ctx, meta.GetUserId(), consts.AttendReward)
 	if err != nil {
 		return nil, consts.ErrDailyAttend
 	}
@@ -298,19 +301,32 @@ func (s *UserService) GetDailyAttend(ctx context.Context, req *show.GetDailyAtte
 	}
 
 	// 用户信息
-	userMeta := adaptor.ExtractUserMeta(ctx)
-	if userMeta.GetUserId() == "" {
+	meta := adaptor.ExtractUserMeta(ctx)
+	if meta.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
 	}
 
-	a, err := s.findAttend(ctx, userMeta.GetUserId())
+	// 获取最新的, 确定今天的更新状态
+	a, err := s.findAttend(ctx, meta.GetUserId())
 	if err != nil {
 		return nil, err
 	}
-	fmt.Print(time.Now().Format("2006-01-02 15:04:05"))
 	if !a.Timestamp.IsZero() && time.Unix(a.Timestamp.Unix(), 0).Day() == time.Now().Day() {
 		resp.Attend = 1
 	}
+
+	// 获取所有的指定年月的所有签到记录
+	data, total, err := s.AttendMapper.FindByYearAndMonth(ctx, meta.GetUserId(), int(req.Year), int(req.Month))
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]int64, 0, len(data))
+	for _, d := range data {
+		dtos = append(dtos, int64(d.Timestamp.Day()))
+	}
+	resp.History = dtos
+	resp.Total = total
 
 	return resp, nil
 }
@@ -383,15 +399,6 @@ func (s *UserService) GetInvitationCode(ctx context.Context, req *show.GetInvita
 }
 
 func (s *UserService) findAttend(ctx context.Context, userId string) (*attend.Attend, error) {
-	a, err := s.AttendMapper.FindOneByUserId(ctx, userId)
-	if errors.Is(err, consts.ErrNotFound) {
-		// 首次签到
-		a, err = s.AttendMapper.Insert(ctx, userId)
-		if err != nil {
-			return nil, err
-		}
-	} else if err != nil {
-		return nil, err
-	}
-	return a, nil
+	a, err := s.AttendMapper.FindLatestOneByUserId(ctx, userId)
+	return a, err
 }

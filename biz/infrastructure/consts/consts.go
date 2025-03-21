@@ -11,6 +11,7 @@ const (
 	DeleteStatus = 3
 	EffectStatus = 0
 	Phone        = "phone"
+	Timestamp    = "timestamp"
 	LogId        = "log_id"
 	NotEqual     = "$ne"
 )
@@ -37,4 +38,5 @@ const (
 	Like             = 1
 	DisLike          = -1
 	InvitationReward = 10
+	AttendReward     = 1
 )
