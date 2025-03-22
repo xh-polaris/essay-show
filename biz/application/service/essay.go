@@ -70,11 +70,13 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 	// 批改失败，记录对应的情况
 	if code != 0 {
 		l := &log.Log{
-			Grade:      *req.Grade,
 			Ocr:        req.Ocr,
 			Response:   result,
 			Status:     int(code),
 			CreateTime: time.Now(),
+		}
+		if req.Grade != nil {
+			l.Grade = *req.Grade
 		}
 		err2 := s.LogMapper.Insert(ctx, l)
 		if err2 != nil {
@@ -98,11 +100,13 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 	// 批改成功，添加记录
 	l := &log.Log{
 		UserId:     meta.GetUserId(),
-		Grade:      *req.Grade,
 		Ocr:        req.Ocr,
 		Response:   result,
 		Status:     int(code),
 		CreateTime: time.Now(),
+	}
+	if req.Grade != nil {
+		l.Grade = *req.Grade
 	}
 	err = s.LogMapper.Insert(ctx, l)
 	if err != nil {
