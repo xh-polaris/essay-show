@@ -16,22 +16,26 @@ import (
 const (
 	prefixKeyCacheKey = "cache:log"
 	CollectionName    = "log"
+	ErrCollectionName = "err_log"
 )
 
 type IMongoMapper interface {
 	Insert(ctx context.Context, l *Log) error
-	FindMany(ctx context.Context, userId string, p basic.PaginationOptions) (logs []*Log, total int64, err error)
+	InsertErr(ctx context.Context, l *Log) error
+	FindMany(ctx context.Context, userId string, p *basic.PaginationOptions) (logs []*Log, total int64, err error)
 	FindOne(ctx context.Context, id string) (l *Log, err error)
 	Update(ctx context.Context, l *Log) error
 }
 
 type MongoMapper struct {
-	conn *monc.Model
+	conn    *monc.Model
+	errConn *monc.Model
 }
 
 func NewMongoMapper(config *config.Config) *MongoMapper {
 	conn := monc.MustNewModel(config.Mongo.URL, config.Mongo.DB, CollectionName, config.Cache)
-	return &MongoMapper{conn: conn}
+	errConn := monc.MustNewModel(config.Mongo.URL, config.Mongo.DB, ErrCollectionName, config.Cache)
+	return &MongoMapper{conn: conn, errConn: errConn}
 }
 
 func (m *MongoMapper) Insert(ctx context.Context, l *Log) error {
@@ -41,6 +45,15 @@ func (m *MongoMapper) Insert(ctx context.Context, l *Log) error {
 	}
 	key := prefixKeyCacheKey + l.ID.Hex()
 	_, err := m.conn.InsertOne(ctx, key, l)
+	return err
+}
+
+func (m *MongoMapper) InsertErr(ctx context.Context, l *Log) error {
+	if l.ID.IsZero() {
+		l.ID = primitive.NewObjectID()
+		l.CreateTime = time.Now()
+	}
+	_, err := m.errConn.InsertOneNoCache(ctx, l)
 	return err
 }
 

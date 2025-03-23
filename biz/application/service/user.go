@@ -38,6 +38,7 @@ var UserServiceSet = wire.NewSet(
 	wire.Bind(new(IUserService), new(*UserService)),
 )
 
+// SignUp 注册用户
 func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.SignUpResp, error) {
 	var oldUser *user.User
 	var err error
@@ -45,6 +46,7 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 		// 查找数据库判断手机号是否注册过
 		oldUser, err = s.UserMapper.FindOneByPhone(ctx, req.AuthId)
 		if err == nil && oldUser != nil {
+			// 重复注册
 			return nil, consts.ErrRepeatedSignUp
 		} else if err != nil && !errors.Is(err, consts.ErrNotFound) {
 			return nil, consts.ErrSignUp
@@ -52,7 +54,7 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	}
 
 	// 在中台注册账户
-	httpClient := util.NewHttpClient()
+	httpClient := util.GetHttpClient()
 	signUpResponse, err := httpClient.SignUp(req.AuthType, req.AuthId, &req.VerifyCode)
 	if err != nil {
 		return nil, consts.ErrSignUp
@@ -102,6 +104,7 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	}, nil
 }
 
+// SignIn 登录用户
 func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.SignInResp, error) {
 	var u *user.User
 	var err error
@@ -116,7 +119,7 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	}
 
 	// 通过中台登录
-	httpClient := util.NewHttpClient()
+	httpClient := util.GetHttpClient()
 	signInResponse, err := httpClient.SignIn(req.AuthType, req.AuthId, req.VerifyCode, req.Password)
 	if err != nil {
 		return nil, consts.ErrSignIn
@@ -166,12 +169,16 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 	return resp, nil
 }
 
+// GetUserInfo 获取用户信息
 func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq) (*show.GetUserInfoResp, error) {
-	userMeta := adaptor.ExtractUserMeta(ctx)
-	if userMeta.GetUserId() == "" {
+	// 用户信息
+	meta := adaptor.ExtractUserMeta(ctx)
+	if meta.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
 	}
-	u, err := s.UserMapper.FindOne(ctx, userMeta.GetUserId())
+
+	// 查询用户
+	u, err := s.UserMapper.FindOne(ctx, meta.GetUserId())
 	if err != nil {
 		return &show.GetUserInfoResp{
 			Code:    -1,
@@ -179,6 +186,7 @@ func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq)
 			Payload: nil,
 		}, nil
 	}
+
 	return &show.GetUserInfoResp{
 		Code: 0,
 		Msg:  "查询成功",
@@ -190,6 +198,7 @@ func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq)
 	}, nil
 }
 
+// UpdateUserInfo 更新用户信息
 func (s *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserInfoReq) (*show.Response, error) {
 	// 获取用户id
 	userMeta := adaptor.ExtractUserMeta(ctx)

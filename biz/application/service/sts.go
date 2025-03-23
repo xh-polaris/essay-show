@@ -31,17 +31,23 @@ var StsServiceSet = wire.NewSet(
 	wire.Bind(new(IStsService), new(*StsService)),
 )
 
+// ApplySignedUrl 向cos申请加签url
 func (s *StsService) ApplySignedUrl(ctx context.Context, req *show.ApplySignedUrlReq) (*show.ApplySignedUrlResp, error) {
+	// 获取用户信息
 	aUser := adaptor.ExtractUserMeta(ctx)
 	if aUser.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
 	}
+	// 构造响应
 	resp := new(show.ApplySignedUrlResp)
+	// 获取cos状态
 	userId := aUser.GetUserId()
 	data, err := s.PlatformSts.GenCosSts(ctx, &sts.GenCosStsReq{Path: "essays/" + userId + "/*"})
 	if err != nil {
 		return nil, err
 	}
+
+	// 生成加签url
 	resp.SessionToken = data.SessionToken
 	if req.Prefix != nil {
 		*req.Prefix += "/"
@@ -55,11 +61,13 @@ func (s *StsService) ApplySignedUrl(ctx context.Context, req *show.ApplySignedUr
 	if err != nil {
 		return nil, err
 	}
+	// 返回响应
 	resp.Url = data2.SignedUrl
 	return resp, nil
 }
 
 func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, error) {
+	// 获取用户信息
 	aUser := adaptor.ExtractUserMeta(ctx)
 	if aUser.GetUserId() == "" {
 		return nil, consts.ErrNotAuthentication
@@ -81,8 +89,12 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 
 	return &show.OCRResp{Title: resp["title"].(string), Text: resp["content"].(string)}, nil
 }
+
+// SendVerifyCode 发送验证码
 func (s *StsService) SendVerifyCode(ctx context.Context, req *show.SendVerifyCodeReq) (*show.Response, error) {
+	// 查找用户
 	aUser, err := s.UserMapper.FindOneByPhone(ctx, req.AuthId)
+
 	if req.Type == 1 { // 登录验证码
 		// 查找数据库判断手机号是否注册过
 		if errors.Is(err, consts.ErrNotFound) || aUser == nil { // 未找到，说明没有注册
@@ -90,7 +102,7 @@ func (s *StsService) SendVerifyCode(ctx context.Context, req *show.SendVerifyCod
 		} else if err != nil {
 			return nil, consts.ErrSend
 		}
-	} else {
+	} else { // 注册验证码
 		if err == nil && aUser != nil {
 			return nil, consts.ErrRepeatedSignUp
 		} else if err != nil && !errors.Is(err, consts.ErrNotFound) {
@@ -99,14 +111,11 @@ func (s *StsService) SendVerifyCode(ctx context.Context, req *show.SendVerifyCod
 	}
 
 	// 通过中台发送验证码
-	httpClient := util.NewHttpClient()
+	httpClient := util.GetHttpClient()
 	_, err = httpClient.SendVerifyCode(req.AuthType, req.AuthId)
 	if err != nil {
 		return nil, consts.ErrSend
 	}
 
-	return &show.Response{
-		Code: 0,
-		Msg:  "发送验证码成功，请注意查收",
-	}, nil
+	return util.Succeed("发送验证码成功，请注意查收")
 }

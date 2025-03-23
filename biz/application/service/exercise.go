@@ -10,6 +10,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/util"
 	eu "github.com/xh-polaris/essay-show/biz/infrastructure/util/exercise"
 	"golang.org/x/net/context"
 	"time"
@@ -34,6 +35,7 @@ var ExerciseServiceSet = wire.NewSet(
 	wire.Bind(new(IExerciseService), new(*ExerciseService)),
 )
 
+// CreateExercise 创建一套练习
 func (s ExerciseService) CreateExercise(ctx context.Context, req *show.CreateExerciseReq) (resp *show.CreateExerciseResp, err error) {
 	// 获取批改记录
 	l, err := s.LogMapper.FindOne(ctx, req.LogId)
@@ -57,14 +59,15 @@ func (s ExerciseService) CreateExercise(ctx context.Context, req *show.CreateExe
 		return nil, err
 	}
 
+	// 存储练习
 	e.LogId = req.LogId
 	e.UserId = userMeta.UserId
-
 	err = s.ExerciseMapper.Insert(ctx, e)
 	if err != nil {
 		return nil, err
 	}
 
+	// dto构造
 	dto := &show.Exercise{}
 	err = copier.Copy(dto, e)
 	if err != nil {
@@ -75,11 +78,14 @@ func (s ExerciseService) CreateExercise(ctx context.Context, req *show.CreateExe
 	dto.UpdateTime = e.CreateTime.Unix()
 
 	resp = &show.CreateExerciseResp{
+		Code:     0,
+		Msg:      "success",
 		Exercise: dto,
 	}
 	return
 }
 
+// ListSimpleExercises 获取简要的练习列表
 func (s ExerciseService) ListSimpleExercises(ctx context.Context, req *show.ListSimpleExercisesReq) (resp *show.ListSimpleExercisesResp, err error) {
 	// 获取用户信息
 	userMeta := adaptor.ExtractUserMeta(ctx)
@@ -87,17 +93,13 @@ func (s ExerciseService) ListSimpleExercises(ctx context.Context, req *show.List
 		return nil, consts.ErrNotAuthentication
 	}
 
-	// 查询
+	// 查询批改记录对应的练习
 	data, total, err := s.ExerciseMapper.FindManyByLogId(ctx, req.LogId, req.PaginationOptions)
 	if err != nil && !errors.Is(err, consts.ErrNotFound) {
 		return nil, err
 	}
 
-	resp = &show.ListSimpleExercisesResp{
-		Code: 0,
-		Msg:  "success",
-	}
-
+	// 构造dto切片
 	dtos := make([]*show.ListSimpleExercisesResp_SimpleExercise, 0)
 	for _, v := range data {
 		records := make([]*show.ListSimpleExercisesResp_Record, 0)
@@ -108,7 +110,7 @@ func (s ExerciseService) ListSimpleExercises(ctx context.Context, req *show.List
 			FinishTime: time.Time{}.Unix(),
 			Like:       v.Like,
 		}
-		// 有过提交
+		// 该练习有过提交记录
 		if len(v.History.Records) > 0 {
 			// 获取最后一次提交记录
 			lastRecord := v.History.Records[len(v.History.Records)-1]
@@ -119,9 +121,11 @@ func (s ExerciseService) ListSimpleExercises(ctx context.Context, req *show.List
 					Score: r.Score,
 				})
 			}
+			// 记录最后一次作答情况
 			dto.TotalScore = lastRecord.Score
 			dto.FinishTime = lastRecord.CreateTime.Unix()
 		} else {
+			// 无作答记录则均用-1占位
 			for _, cq := range v.Question.ChoiceQuestions {
 				records = append(records, &show.ListSimpleExercisesResp_Record{
 					Id:    cq.Id,
@@ -132,24 +136,33 @@ func (s ExerciseService) ListSimpleExercises(ctx context.Context, req *show.List
 		dto.Records = records
 		dtos = append(dtos, dto)
 	}
-	resp.Exercises = dtos
-	resp.Total = total
+
+	// 构造响应
+	resp = &show.ListSimpleExercisesResp{
+		Code:      0,
+		Msg:       "success",
+		Exercises: dtos,
+		Total:     total,
+	}
+
 	return
 
 }
 
+// GetExercise 获取一次练习的详细记录
 func (s ExerciseService) GetExercise(ctx context.Context, req *show.GetExerciseReq) (resp *show.GetExerciseResp, err error) {
+	// 查询练习
 	e, err := s.ExerciseMapper.FindOneById(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
-	// 处理题目
+	// 处理选择题切片
 	cqs := make([]*show.ChoiceQuestion, 0)
 	for _, v := range e.Question.ChoiceQuestions {
-		// 处理选项
-		os := make([]*show.Option, 0)
+		// 处理各个选项
+		ops := make([]*show.Option, 0)
 		for _, o := range v.Options {
-			os = append(os, &show.Option{
+			ops = append(ops, &show.Option{
 				Option:  o.Option,
 				Content: o.Content,
 				Score:   o.Score,
@@ -159,7 +172,7 @@ func (s ExerciseService) GetExercise(ctx context.Context, req *show.GetExerciseR
 			Id:          v.Id,
 			Question:    v.Question,
 			Explanation: v.Explanation,
-			Options:     os,
+			Options:     ops,
 		}
 		cqs = append(cqs, cq)
 	}
@@ -181,6 +194,7 @@ func (s ExerciseService) GetExercise(ctx context.Context, req *show.GetExerciseR
 			CreateTime: v.CreateTime.Unix(),
 		})
 	}
+	// 构造dto
 	dto := &show.Exercise{
 		Id:         e.ID.Hex(),
 		UserId:     e.UserId,
@@ -193,6 +207,7 @@ func (s ExerciseService) GetExercise(ctx context.Context, req *show.GetExerciseR
 		Status:     e.Status,
 	}
 
+	// 构造响应
 	resp = &show.GetExerciseResp{
 		Code:     0,
 		Msg:      "success",
@@ -202,6 +217,7 @@ func (s ExerciseService) GetExercise(ctx context.Context, req *show.GetExerciseR
 	return
 }
 
+// DoExercise 提交一次练习作答，目前是没有暂时记录的，需要完成所有的题目然后结算
 func (s ExerciseService) DoExercise(ctx context.Context, req *show.DoExerciseReq) (resp *show.DoExerciseResp, err error) {
 	e, err := s.ExerciseMapper.FindOneById(ctx, req.Id)
 	if err != nil {
@@ -220,6 +236,7 @@ func (s ExerciseService) DoExercise(ctx context.Context, req *show.DoExerciseReq
 	for _, v := range cqs {
 		qMap[v.Id] = v
 	}
+
 	// 做题记录
 	rs := make([]*exercise.Record, 0)
 	var sum int64
@@ -232,6 +249,7 @@ func (s ExerciseService) DoExercise(ctx context.Context, req *show.DoExerciseReq
 					score = o.Score
 				}
 			}
+			// 构造单题记录
 			r := &exercise.Record{
 				Id:     q.Id,
 				Option: v.Option,
@@ -241,6 +259,7 @@ func (s ExerciseService) DoExercise(ctx context.Context, req *show.DoExerciseReq
 			rs = append(rs, r)
 		}
 	}
+	// 构造练习作答记录
 	rds := &exercise.Records{
 		Records:    rs,
 		Score:      sum,
@@ -276,27 +295,26 @@ func (s ExerciseService) DoExercise(ctx context.Context, req *show.DoExerciseReq
 	return
 }
 
+// LikeExercise 点赞或点踩一个练习
 func (s ExerciseService) LikeExercise(ctx context.Context, req *show.LikeExerciseReq) (resp *show.Response, err error) {
+	// 查询练习
 	e, err := s.ExerciseMapper.FindOneById(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
+	// 校验参数
 	if req.Like > 1 || req.Like < -1 {
 		return &show.Response{
 			Code: 999,
 			Msg:  "Like行为超出范围",
 		}, nil
 	}
+	// 更改点赞状态
 	e.Like = req.Like
 	err = s.ExerciseMapper.Update(ctx, e)
 	if err != nil {
-		return &show.Response{
-			Code: 999,
-			Msg:  "标记失败",
-		}, nil
+		return util.Fail(999, "标记失败"), nil
 	}
-	return &show.Response{
-		Code: 0,
-		Msg:  "标记成功",
-	}, nil
+
+	return util.Succeed("标记成功")
 }
