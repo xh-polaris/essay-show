@@ -11,6 +11,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/feedback"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/invitation"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
@@ -53,12 +54,18 @@ func NewProvider() (*Provider, error) {
 		LogMapper:      mongoMapper2,
 		UserMapper:     mongoMapper,
 	}
+	feedbackMongoMapper := feedback.NewMongoMapper(configConfig)
+	feedBackService := service.FeedBackService{
+		FeedbackMapper: feedbackMongoMapper,
+		UserMapper:     mongoMapper,
+	}
 	providerProvider := &Provider{
 		Config:          configConfig,
 		UserService:     userService,
 		EssayService:    essayService,
 		StsService:      stsService,
 		ExerciseService: exerciseService,
+		FeedBackService: feedBackService,
 	}
 	return providerProvider, nil
 }

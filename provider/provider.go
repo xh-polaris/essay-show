@@ -6,6 +6,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/attend"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/feedback"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/invitation"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
@@ -29,6 +30,7 @@ type Provider struct {
 	EssayService    service.EssayService
 	StsService      service.StsService
 	ExerciseService service.ExerciseService
+	FeedBackService service.FeedBackService
 }
 
 func Get() *Provider {
@@ -44,6 +46,7 @@ var ApplicationSet = wire.NewSet(
 	service.EssayServiceSet,
 	service.StsServiceSet,
 	service.ExerciseServiceSet,
+	service.FeedbackServiceSet,
 )
 
 var InfrastructureSet = wire.NewSet(
@@ -54,6 +57,7 @@ var InfrastructureSet = wire.NewSet(
 	attend.NewMongoMapper,
 	invitation.NewCodeMongoMapper,
 	invitation.NewLogMongoMapper,
+	feedback.NewMongoMapper,
 	RpcSet,
 )
 

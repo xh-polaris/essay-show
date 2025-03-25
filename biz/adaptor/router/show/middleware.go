@@ -145,3 +145,13 @@ func _getdailyattendMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _feedbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _submitfeedbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
