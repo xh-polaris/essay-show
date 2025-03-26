@@ -155,3 +155,8 @@ func _submitfeedbackMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _listfeedbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

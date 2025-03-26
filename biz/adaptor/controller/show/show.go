@@ -266,3 +266,19 @@ func SubmitFeedback(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.FeedBackService.Submit(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// ListFeedback .
+// @router /feedback/list [GET]
+func ListFeedback(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req show.ListFeedbackReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.FeedBackService.ListFeedback(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

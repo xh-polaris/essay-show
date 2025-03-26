@@ -36,6 +36,7 @@ func Register(r *server.Hertz) {
 	}
 	{
 		_feedback := root.Group("/feedback", _feedbackMw()...)
+		_feedback.GET("/list", append(_listfeedbackMw(), show.ListFeedback)...)
 		_feedback.POST("/submit", append(_submitfeedbackMw(), show.SubmitFeedback)...)
 	}
 	{
