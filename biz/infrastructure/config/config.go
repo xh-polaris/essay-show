@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"os"
 
 	"github.com/zeromicro/go-zero/core/service"
@@ -27,6 +28,7 @@ type Config struct {
 		DB  string
 	}
 	Cache cache.CacheConf
+	Redis *redis.RedisConf
 }
 
 func NewConfig() (*Config, error) {

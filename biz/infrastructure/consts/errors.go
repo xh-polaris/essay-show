@@ -51,6 +51,7 @@ var (
 var (
 	ErrInvalidParams = NewErrno(codes.InvalidArgument, errors.New("参数错误"))
 	ErrCall          = NewErrno(codes.Unknown, errors.New("调用接口失败，请重试"))
+	ErrOneCall       = NewErrno(codes.Code(3001), errors.New("同一时刻仅可以批改一篇作文, 请等待上一篇作文批改结束"))
 )
 
 // 数据库相关错误

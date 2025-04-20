@@ -10,6 +10,7 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/user"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/redis"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util"
 	logx "github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
 	"time"
@@ -52,11 +53,23 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 		return nil, consts.ErrInSufficientCount
 	}
 
+	// 获取锁
+	key := "evaluate" + meta.GetUserId()
+	lock := redis.NewEvaMutex(ctx, key, 20, 40)
+	if err = lock.Lock(); err != nil {
+		return nil, consts.ErrOneCall
+	}
+
 	// 调用essay-stateless批改作文
 	client := util.GetHttpClient()
 	_resp, err := client.BetaEvaluate(req.Title, req.Text, req.Grade, req.EssayType)
 	if err != nil { // 调用call失败
 		return nil, consts.ErrCall
+	}
+
+	// 释放锁, 释放锁失败或锁超时不应该记录这一次批改
+	if err = lock.Unlock(); err != nil || lock.Expired() {
+		return nil, nil
 	}
 
 	// 获取批改的结果
