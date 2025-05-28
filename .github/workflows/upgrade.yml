@@ -19,8 +19,19 @@ env:
   IMAGE_NAME: essay-show
 
 jobs:
+  env:
+    runs-on: elion-runners
+    outputs:
+      VAR_KUBE_VERSION: ${{ steps.env.outputs.VAR_KUBE_VERSION }}
+      SECRET_DOCKERHUB_ACCESS_TOKEN: ${{ steps.env.outputs.SECRET_DOCKERHUB_ACCESS_TOKEN }}
+    steps:
+      - id: env
+        run: |
+          echo "VAR_KUBE_VERSION=$VAR_KUBE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "SECRET_DOCKERHUB_ACCESS_TOKEN=$SECRET_DOCKERHUB_ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
   build:
-    runs-on: ubuntu-latest
+    runs-on: elion-runners
+    needs: env
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -66,8 +77,8 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    runs-on: ubuntu-latest
-    needs: build
+    runs-on: elion-runners
+    needs: [build,env]
     if: github.event_name == 'push'
     steps:
       - name: Setup Kubectl
