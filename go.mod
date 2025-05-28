@@ -9,7 +9,7 @@ replace go.opentelemetry.io/otel v1.32.0 => go.opentelemetry.io/otel v1.24.0
 require (
 	github.com/bytedance/gopkg v0.1.1
 	github.com/cloudwego/hertz v0.9.3
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
 	github.com/hertz-contrib/monitor-prometheus v0.1.2
