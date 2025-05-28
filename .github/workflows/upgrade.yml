@@ -73,8 +73,7 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ${{ env.REGISTRY }}/${{ env.USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+
 
   deploy:
     runs-on: elion-runners
