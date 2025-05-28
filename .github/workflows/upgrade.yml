@@ -23,10 +23,12 @@ jobs:
     runs-on: elion-runners
     outputs:
       VAR_KUBE_VERSION: ${{ steps.env.outputs.VAR_KUBE_VERSION }}
+      SECRET_DOCKERHUB_ACCESS_TOKEN: ${{ steps.env.outputs.SECRET_DOCKERHUB_ACCESS_TOKEN }}
     steps:
       - id: env
         run: |
           echo "VAR_KUBE_VERSION=$VAR_KUBE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "SECRET_DOCKERHUB_ACCESS_TOKEN=$SECRET_DOCKERHUB_ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
   build:
     runs-on: elion-runners
     needs: env
