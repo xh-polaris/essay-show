@@ -164,6 +164,7 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 		AccessToken:  signInResponse["accessToken"].(string),
 		AccessExpire: int64(signInResponse["accessExpire"].(float64)),
 		Name:         u.Username,
+		Avatar:       u.Avatar,
 	}
 
 	return resp, nil
@@ -191,9 +192,10 @@ func (s *UserService) GetUserInfo(ctx context.Context, req *show.GetUserInfoReq)
 		Code: 0,
 		Msg:  "查询成功",
 		Payload: &show.GetUserInfoResp_Payload{
-			Name:  u.Username,
-			Count: u.Count,
-			Phone: u.Phone,
+			Name:   u.Username,
+			Count:  u.Count,
+			Phone:  u.Phone,
+			Avatar: u.Avatar,
 		},
 	}, nil
 }
@@ -216,6 +218,7 @@ func (s *UserService) UpdateUserInfo(ctx context.Context, req *show.UpdateUserIn
 	u.Username = req.Name
 	u.School = req.School
 	u.Grade = req.Grade
+	u.Avatar = req.Avatar
 
 	// 存入新的用户信息
 	err = s.UserMapper.Update(ctx, u)

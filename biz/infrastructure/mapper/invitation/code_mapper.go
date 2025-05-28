@@ -47,7 +47,9 @@ func (m *CodeMongoMapper) Insert(ctx context.Context, userId string) (*Code, err
 		}
 		break
 	}
-
+	if t > 100 {
+		return nil, consts.ErrGetInvitation
+	}
 	c := &Code{
 		ID:        primitive.NewObjectID(),
 		UserId:    userId,

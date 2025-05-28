@@ -4,24 +4,22 @@ package main
 
 import (
 	"context"
-	"github.com/xh-polaris/essay-show/biz/adaptor"
-	"github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
-	"github.com/xh-polaris/essay-show/provider"
-	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.opentelemetry.io/otel"
-	"net/http"
-
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	prometheus "github.com/hertz-contrib/monitor-prometheus"
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"
+	"github.com/xh-polaris/essay-show/biz/adaptor"
+	"github.com/xh-polaris/essay-show/biz/infrastructure/util/log"
+	"github.com/xh-polaris/essay-show/provider"
 	"github.com/xh-polaris/gopkg/hertz/middleware"
 	logx "github.com/xh-polaris/gopkg/util/log"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/contrib/propagators/b3"
-
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
+	"net/http"
 )
 
 func Init() {

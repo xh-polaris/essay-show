@@ -44,7 +44,8 @@ var (
 	ErrDailyAttend       = NewErrno(codes.Code(1009), errors.New("签到失败"))
 	ErrRepeatDailyAttend = NewErrno(codes.Code(1010), errors.New("一天只能签到一次"))
 	ErrRepeatInvitation  = NewErrno(codes.Code(1011), errors.New("已填写过邀请码"))
-	ErrInvitation        = NewErrno(codes.Code(1011), errors.New("填写邀请码失败，请重试"))
+	ErrInvitation        = NewErrno(codes.Code(1012), errors.New("填写邀请码失败，请重试"))
+	ErrGetInvitation     = NewErrno(codes.Code(1013), errors.New("获取邀请码失败，请重试"))
 )
 
 // ErrInvalidParams 调用时错误
