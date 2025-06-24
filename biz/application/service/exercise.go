@@ -54,7 +54,7 @@ func (s ExerciseService) CreateExercise(ctx context.Context, req *show.CreateExe
 	}
 
 	// 调用生成接口
-	e, err := eu.GenerateExercise(u.Grade, l)
+	e, err := eu.GenerateExercise(ctx, u.Grade, l)
 	if err != nil {
 		return nil, err
 	}

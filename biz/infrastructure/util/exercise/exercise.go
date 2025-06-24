@@ -6,14 +6,15 @@ import (
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/exercise"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/mapper/log"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/util"
+	"golang.org/x/net/context"
 )
 
-func GenerateExercise(grade int64, l *log.Log) (*exercise.Exercise, error) {
+func GenerateExercise(ctx context.Context, grade int64, l *log.Log) (*exercise.Exercise, error) {
 	m, err := parseLog(l)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := generateByHttp(grade, m)
+	resp, err := generateByHttp(ctx, grade, m)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +84,7 @@ func parseExercise(resp map[string]any) (*exercise.Exercise, error) {
 	return e, nil
 }
 
-func generateByHttp(grade int64, m map[string]any) (map[string]any, error) {
+func generateByHttp(ctx context.Context, grade int64, m map[string]any) (map[string]any, error) {
 	header := make(map[string]string)
 	header["Content-Type"] = consts.ContentTypeJson
 	header["Charset"] = consts.CharSetUTF8
@@ -91,7 +92,7 @@ func generateByHttp(grade int64, m map[string]any) (map[string]any, error) {
 	body := buildBody(grade, m)
 
 	client := util.GetHttpClient()
-	resp, err := client.SendRequest(consts.Post, consts.ExerciseUrl, header, body)
+	resp, err := client.SendRequest(ctx, consts.Post, consts.ExerciseUrl, header, body)
 	if err != nil {
 		return nil, err
 	}

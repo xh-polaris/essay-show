@@ -82,7 +82,7 @@ func (s *StsService) OCR(ctx context.Context, req *show.OCRReq) (*show.OCRResp, 
 
 	// 调用ocr接口
 	client := util.GetHttpClient()
-	resp, err := client.BeeTitleUrlOCR(images, left)
+	resp, err := client.BeeTitleUrlOCR(ctx, images, left)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (s *StsService) SendVerifyCode(ctx context.Context, req *show.SendVerifyCod
 
 	// 通过中台发送验证码
 	httpClient := util.GetHttpClient()
-	_, err = httpClient.SendVerifyCode(req.AuthType, req.AuthId)
+	_, err = httpClient.SendVerifyCode(ctx, req.AuthType, req.AuthId)
 	if err != nil {
 		return nil, consts.ErrSend
 	}

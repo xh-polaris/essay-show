@@ -61,7 +61,7 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 
 	// 调用essay-stateless批改作文
 	client := util.GetHttpClient()
-	_resp, err := client.BetaEvaluate(req.Title, req.Text, req.Grade, req.EssayType)
+	_resp, err := client.BetaEvaluate(ctx, req.Title, req.Text, req.Grade, req.EssayType)
 	if err != nil { // 调用call失败
 		return nil, consts.ErrCall
 	}
@@ -94,7 +94,7 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 
 	// 批改失败，记录对应的情况
 	if code != 0 {
-		logx.Error("批改失败 err: %v", err)
+		logx.CtxError(ctx, "批改失败 err: %v", err)
 		// 存入错误信息，用于后续分析问题 TODO: 后续可能考虑这里通过定时任务存档，并从数据库中删除
 		l.Response = err.Error()
 		err = s.LogMapper.InsertErr(ctx, l)
@@ -118,7 +118,7 @@ func (s *EssayService) EssayEvaluate(ctx context.Context, req *show.EssayEvaluat
 	err = s.LogMapper.Insert(ctx, l)
 	if err != nil {
 		// 记录插入失败应该也要获得结果，因为剩余次数已经成功扣除。 TODO: 需要一个托底逻辑，考虑使用事务
-		logx.Error("log insert failed %v", err)
+		logx.CtxError(ctx, "log insert failed %v", err)
 	}
 	return resp, nil
 }
@@ -166,7 +166,7 @@ func (s *EssayService) LikeEvaluate(ctx context.Context, req *show.LikeEvaluateR
 	l.Like = req.Like
 	err = s.LogMapper.Update(ctx, l)
 	if err != nil {
-		logx.Error(err.Error())
+		logx.CtxError(ctx, err.Error())
 		return util.Fail(999, "标记失败"), nil
 	}
 	return util.Succeed("标记成功")

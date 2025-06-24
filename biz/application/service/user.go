@@ -55,7 +55,7 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 
 	// 在中台注册账户
 	httpClient := util.GetHttpClient()
-	signUpResponse, err := httpClient.SignUp(req.AuthType, req.AuthId, &req.VerifyCode)
+	signUpResponse, err := httpClient.SignUp(ctx, req.AuthType, req.AuthId, &req.VerifyCode)
 	if err != nil {
 		return nil, consts.ErrSignUp
 	}
@@ -64,7 +64,7 @@ func (s *UserService) SignUp(ctx context.Context, req *show.SignUpReq) (*show.Si
 	// 在中台设置密码
 	authorization := signUpResponse["accessToken"].(string)
 	if req.Password != "" {
-		_, err = httpClient.SetPassword(authorization, req.Password)
+		_, err = httpClient.SetPassword(ctx, authorization, req.Password)
 		if err != nil {
 			return nil, consts.ErrSignUp
 		}
@@ -120,7 +120,7 @@ func (s *UserService) SignIn(ctx context.Context, req *show.SignInReq) (*show.Si
 
 	// 通过中台登录
 	httpClient := util.GetHttpClient()
-	signInResponse, err := httpClient.SignIn(req.AuthType, req.AuthId, req.VerifyCode, req.Password)
+	signInResponse, err := httpClient.SignIn(ctx, req.AuthType, req.AuthId, req.VerifyCode, req.Password)
 	if err != nil {
 		return nil, consts.ErrSignIn
 	}
@@ -248,14 +248,14 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *show.UpdatePasswo
 
 	// 在中台注册账户
 	httpClient := util.NewHttpClient()
-	signInResponse, err := httpClient.SignUp(consts.Phone, u.Phone, &req.VerifyCode)
+	signInResponse, err := httpClient.SignUp(ctx, consts.Phone, u.Phone, &req.VerifyCode)
 	if err != nil {
 		return nil, consts.ErrVerifyCode
 	}
 
 	// 在中台设置密码
 	authorization := signInResponse["accessToken"].(string)
-	_, err = httpClient.SetPassword(authorization, req.Password)
+	_, err = httpClient.SetPassword(ctx, authorization, req.Password)
 	if err != nil {
 		return nil, consts.ErrSignUp
 	}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
+	"golang.org/x/net/context"
 	"io"
 	"log"
 	"net/http"
@@ -39,7 +40,7 @@ type params struct {
 }
 
 // SendRequest 发送 HTTP 请求
-func (c *HttpClient) SendRequest(method, url string, headers map[string]string, body interface{}) (map[string]interface{}, error) {
+func (c *HttpClient) SendRequest(ctx context.Context, method, url string, headers map[string]string, body interface{}) (map[string]interface{}, error) {
 	// 将 body 序列化为 JSON
 	bodyBytes, err := json.Marshal(body)
 	if err != nil {
@@ -51,6 +52,7 @@ func (c *HttpClient) SendRequest(method, url string, headers map[string]string, 
 	if err != nil {
 		return nil, fmt.Errorf("创建请求失败: %w", err)
 	}
+	req.WithContext(ctx)
 
 	// 设置请求头
 	for key, value := range headers {
@@ -90,7 +92,7 @@ func (c *HttpClient) SendRequest(method, url string, headers map[string]string, 
 }
 
 // SignUp 用于用户初始化
-func (c *HttpClient) SignUp(authType string, authId string, verifyCode *string) (map[string]interface{}, error) {
+func (c *HttpClient) SignUp(ctx context.Context, authType string, authId string, verifyCode *string) (map[string]interface{}, error) {
 
 	body := make(map[string]interface{})
 	body["authType"] = authType
@@ -107,7 +109,7 @@ func (c *HttpClient) SignUp(authType string, authId string, verifyCode *string) 
 		header["X-Xh-Env"] = "test"
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.PlatformSignInUrl, header, body)
+	resp, err := c.SendRequest(ctx, consts.Post, consts.PlatformSignInUrl, header, body)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +117,7 @@ func (c *HttpClient) SignUp(authType string, authId string, verifyCode *string) 
 }
 
 // SignIn 用于用户登录
-func (c *HttpClient) SignIn(authType string, authId string, verifyCode *string, password *string) (map[string]interface{}, error) {
+func (c *HttpClient) SignIn(ctx context.Context, authType string, authId string, verifyCode *string, password *string) (map[string]interface{}, error) {
 
 	body := make(map[string]interface{})
 	body["authType"] = authType
@@ -137,7 +139,7 @@ func (c *HttpClient) SignIn(authType string, authId string, verifyCode *string, 
 		header["X-Xh-Env"] = "test"
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.PlatformSignInUrl, header, body)
+	resp, err := c.SendRequest(ctx, consts.Post, consts.PlatformSignInUrl, header, body)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +147,7 @@ func (c *HttpClient) SignIn(authType string, authId string, verifyCode *string, 
 }
 
 // SetPassword 用于用户登录
-func (c *HttpClient) SetPassword(authorization string, password string) (map[string]interface{}, error) {
+func (c *HttpClient) SetPassword(ctx context.Context, authorization string, password string) (map[string]interface{}, error) {
 
 	body := make(map[string]interface{})
 	body["password"] = password
@@ -161,7 +163,7 @@ func (c *HttpClient) SetPassword(authorization string, password string) (map[str
 		header["X-Xh-Env"] = "test"
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.PlatformSetPasswordUrl, header, body)
+	resp, err := c.SendRequest(ctx, consts.Post, consts.PlatformSetPasswordUrl, header, body)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +171,7 @@ func (c *HttpClient) SetPassword(authorization string, password string) (map[str
 }
 
 // SendVerifyCode SetPassword 用于用户登录
-func (c *HttpClient) SendVerifyCode(authType string, authId string) (map[string]interface{}, error) {
+func (c *HttpClient) SendVerifyCode(ctx context.Context, authType string, authId string) (map[string]interface{}, error) {
 
 	body := make(map[string]interface{})
 	body["authType"] = authType
@@ -184,7 +186,7 @@ func (c *HttpClient) SendVerifyCode(authType string, authId string) (map[string]
 		header["X-Xh-Env"] = "test"
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.PlatformSendVerifyCodeUrl, header, body)
+	resp, err := c.SendRequest(ctx, consts.Post, consts.PlatformSendVerifyCodeUrl, header, body)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +194,7 @@ func (c *HttpClient) SendVerifyCode(authType string, authId string) (map[string]
 }
 
 // BetaEvaluate 用Beta接口进行批改
-func (c *HttpClient) BetaEvaluate(title string, text string, grade *int64, essayType *string) (map[string]interface{}, error) {
+func (c *HttpClient) BetaEvaluate(ctx context.Context, title string, text string, grade *int64, essayType *string) (map[string]interface{}, error) {
 
 	body := make(map[string]interface{})
 
@@ -216,7 +218,7 @@ func (c *HttpClient) BetaEvaluate(title string, text string, grade *int64, essay
 		header["X-Xh-Env"] = "test"
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.BetaEvaluateUrl, header, body)
+	resp, err := c.SendRequest(ctx, consts.Post, consts.BetaEvaluateUrl, header, body)
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +226,7 @@ func (c *HttpClient) BetaEvaluate(title string, text string, grade *int64, essay
 }
 
 // BeeTitleUrlOCR 蜜蜂ocr - 带标题
-func (c *HttpClient) BeeTitleUrlOCR(images []string, left string) (map[string]interface{}, error) {
+func (c *HttpClient) BeeTitleUrlOCR(ctx context.Context, images []string, left string) (map[string]interface{}, error) {
 	body := make(map[string]interface{})
 	// 图片url列表
 	body["images"] = images
@@ -239,7 +241,7 @@ func (c *HttpClient) BeeTitleUrlOCR(images []string, left string) (map[string]in
 		header["X-Xh-Env"] = "test"
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.BeeTitleUrlOcr, header, body)
+	resp, err := c.SendRequest(ctx, consts.Post, consts.BeeTitleUrlOcr, header, body)
 	if err != nil {
 		return nil, err
 	}
