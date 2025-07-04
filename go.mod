@@ -1,8 +1,6 @@
 module github.com/xh-polaris/essay-show
 
-go 1.22.0
-
-toolchain go1.22.12
+go 1.23.0
 
 replace go.opentelemetry.io/otel v1.32.0 => go.opentelemetry.io/otel v1.24.0
 
@@ -108,10 +106,10 @@ require (
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
-	golang.org/x/crypto v0.28.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240711142825-46eb208f015d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240701130421-f6361c86f094 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
