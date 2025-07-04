@@ -25,7 +25,7 @@ const (
 	ContentTypeJson           = "application/json"
 	CharSetUTF8               = "UTF-8"
 	Beta                      = "beta"
-	OpenApiCallUrl            = "https://api.xhpolaris.com/openapi/call/"                    // openapi地址
+	OpenApiCallUrl            = "https://api.coze.cn/v3/chat"                                // openapi地址
 	ExerciseUrl               = "https://essay.cubenlp.com/api/algorithm/generate_exercises" // 练习生成地址
 	BeeTitleUrlOcr            = "https://api.xhpolaris.com/essay/sts/ocr/title/bee/url"      //bee的ocr且使用url形式，保留标题
 	BetaEvaluateUrl           = "https://api.xhpolaris.com/essay/evaluate"                   // essay-stateless的批改接口

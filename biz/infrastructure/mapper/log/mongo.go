@@ -2,6 +2,7 @@ package log
 
 import (
 	"context"
+	"errors"
 	"github.com/xh-polaris/essay-show/biz/application/dto/basic"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/config"
 	"github.com/xh-polaris/essay-show/biz/infrastructure/consts"
@@ -9,6 +10,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/monc"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
@@ -91,11 +93,18 @@ func (m *MongoMapper) FindOne(ctx context.Context, id string) (l *Log, err error
 		consts.ID: oid,
 	}
 
-	key := prefixKeyCacheKey + id
+	//key := prefixKeyCacheKey + id
 
 	l = &Log{}
-	err = m.conn.FindOne(ctx, key, l, filter)
-	return l, err
+	err = m.conn.FindOneNoCache(ctx, l, filter)
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return nil, consts.ErrNotFound
+	case err != nil:
+		return nil, err
+	default:
+		return l, nil
+	}
 }
 
 func (m *MongoMapper) Update(ctx context.Context, l *Log) error {
