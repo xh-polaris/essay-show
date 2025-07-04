@@ -110,11 +110,11 @@ func generate(ctx context.Context, grade int64, m map[string]any, l *log.Log) (m
 		return nil, err
 	}
 
-	//// 最少需要四十五秒
-	time.Sleep(45 * time.Second)
-	// 60s timeout
-	timeout := time.After(60 * time.Second)
-	ticker := time.NewTicker(2 * time.Second)
+	//// 最少需要六十秒
+	time.Sleep(60 * time.Second)
+	// 90s timeout
+	timeout := time.After(90 * time.Second)
+	ticker := time.NewTicker(3 * time.Second)
 	defer ticker.Stop()
 
 	chat := resp.Chat
