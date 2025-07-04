@@ -150,7 +150,7 @@ func generate(ctx context.Context, grade int64, m map[string]any, l *log.Log) (m
 					return nil, consts.ErrExercise
 				}
 				result := make(map[string]any)
-				plainResult := message.Messages[0].Content
+				plainResult := strings.ReplaceAll(message.Messages[0].Content, "`", "")
 				if err = json.Unmarshal([]byte(plainResult), &result); err != nil {
 					logx.Error("generate exercise: list message error %s", err)
 					return nil, consts.ErrExercise
